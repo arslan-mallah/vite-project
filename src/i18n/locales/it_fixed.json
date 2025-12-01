@@ -1,0 +1,25 @@
+﻿{
+    "navigation":  {
+                       "userManagementDesc":  "Crea, modifica e gestisci utenti",
+                       "languageSettings":  "Impostazioni lingua",
+                       "languageSettingsDesc":  "Cambia la lingua dell\u0027applicazione",
+                       "userManagement":  "Gestione utenti"
+                   },
+    "dashboard":  {
+                      "subtitle":  "Gestisci traduzioni e impostazioni lingua",
+                      "title":  "Centro Traduzioni"
+                  },
+    "languageSettings":  {
+                             "info1":  "Seleziona qualsiasi lingua per modificare l\u0027interfaccia dell\u0027app",
+                             "languages":  "lingue da tutto il mondo",
+                             "aboutTitle":  "Informazioni sulle impostazioni della lingua",
+                             "subtitle":  "Seleziona la tua lingua preferita per modificare l\u0027intera interfaccia dell\u0027applicazione",
+                             "supporting":  "Supporto",
+                             "selectLanguage":  "Seleziona una lingua",
+                             "info4":  "Le modifiche vengono applicate immediatamente in tutta l\u0027applicazione",
+                             "currentLanguage":  "Lingua attuale",
+                             "title":  "Impostazioni lingua",
+                             "info3":  "Supporta 13 lingue internazionali principali",
+                             "info2":  "La tua preferenza di lingua viene salvata automaticamente"
+                         }
+}

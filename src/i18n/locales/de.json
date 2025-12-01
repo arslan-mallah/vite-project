@@ -1,0 +1,50 @@
+{
+  "dashboard": {
+    "title": "Übersetzungszentrum",
+    "subtitle": "Verwalten Sie Übersetzungen und Spracheinstellungen"
+  },
+  "navigation": {
+    "languageSettings": "Spracheinstellungen",
+    "languageSettingsDesc": "Anwendungssprache ändern",
+    "userManagement": "Benutzerverwaltung",
+    "userManagementDesc": "Benutzer erstellen, bearbeiten und verwalten"
+  },
+  "languageSettings": {
+    "title": "Spracheinstellungen",
+    "subtitle": "Wählen Sie Ihre bevorzugte Sprache, um die gesamte Anwendungsoberfläche zu ändern",
+    "currentLanguage": "Aktuelle Sprache",
+    "selectLanguage": "Sprache wählen",
+    "aboutTitle": "Über Spracheinstellungen",
+    "info1": "Wählen Sie eine beliebige Sprache, um die App-Schnittstelle zu ändern",
+    "info2": "Ihre Sprachpräferenz wird automatisch gespeichert",
+    "info3": "Unterstützt 13 wichtige internationale Sprachen",
+    "info4": "Änderungen werden sofort in der gesamten Anwendung angewendet",
+    "supporting": "Unterstützung",
+    "languages": "Sprachen aus der ganzen Welt"
+  },
+  "users": {
+    "title": "Benutzerverwaltung",
+    "subtitle": "Verwalten und organisieren Sie Ihre Benutzer",
+    "fetchAll": "Alle Benutzer abrufen",
+    "createNew": "Neuen Benutzer erstellen",
+    "noUsers": "Keine Benutzer gefunden. Klicken Sie auf 'Alle Benutzer abrufen', um zu laden.",
+    "addUser": "Benutzer hinzufügen",
+    "name": "Name",
+    "email": "Email",
+    "role": "Rolle",
+    "actions": "Aktionen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "id": "ID",
+    "loading": "Wird geladen...",
+    "error": "Fehler",
+    "failedFetch": "Fehler beim Abrufen von Benutzern",
+    "failedCreate": "Fehler beim Erstellen des Benutzers",
+    "failedDelete": "Fehler beim Löschen des Benutzers"
+  },
+  "roles": {
+    "user": "Benutzer",
+    "admin": "Administrator",
+    "moderator": "Moderator"
+  }
+}

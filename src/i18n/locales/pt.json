@@ -1,0 +1,50 @@
+﻿{
+    "navigation":  {
+                       "userManagementDesc":  "Criar, editar e gerenciar usuários",
+                       "languageSettings":  "Configurações de idioma",
+                       "languageSettingsDesc":  "Alterar idioma do aplicativo",
+                       "userManagement":  "Gerenciamento de usuários"
+                   },
+    "dashboard":  {
+                      "subtitle":  "Gerencie tradições e configurações de idioma",
+                      "title":  "Centro de Tradução"
+                  },
+    "users":  {
+                  "id":  "ID",
+                  "delete":  "Excluir",
+                  "loading":  "Carregando...",
+                  "title":  "Gerenciamento de usuários",
+                  "edit":  "Editar",
+                  "error":  "Erro",
+                  "noUsers":  "Nenhum usuário encontrado. Clique em Buscar todos os usuários para carregar.",
+                  "role":  "Papel",
+                  "fetchAll":  "Buscar todos os usuários",
+                  "failedDelete":  "Falha ao excluir usuário",
+                  "addUser":  "Adicionar usuário",
+                  "email":  "Email",
+                  "createNew":  "Criar novo usuário",
+                  "subtitle":  "Gerencie e organize seus usuários",
+                  "actions":  "Ações",
+                  "name":  "Nome",
+                  "failedCreate":  "Falha ao criar usuário",
+                  "failedFetch":  "Falha ao buscar usuários"
+              },
+    "languageSettings":  {
+                             "info1":  "Selecione qualquer idioma para alterar a interface do aplicativo",
+                             "languages":  "idiomas de todo o mundo",
+                             "aboutTitle":  "Sobre configurações de idioma",
+                             "subtitle":  "Selecione seu idioma preferido para alterar a interface do aplicativo completo",
+                             "supporting":  "Suportando",
+                             "selectLanguage":  "Selecionar idioma",
+                             "info4":  "As alterações são aplicadas imediatamente em todo o aplicativo",
+                             "currentLanguage":  "Idioma atual",
+                             "title":  "Configurações de idioma",
+                             "info3":  "Suporta 13 grandes idiomas internacionais",
+                             "info2":  "Sua preferência de idioma é salva automaticamente"
+                         },
+    "roles":  {
+                  "admin":  "Administrador",
+                  "user":  "Usuário",
+                  "moderator":  "Moderador"
+              }
+}

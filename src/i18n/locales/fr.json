@@ -1,0 +1,50 @@
+{
+  "dashboard": {
+    "title": "Centre de Traduction",
+    "subtitle": "Gérez les traductions et les paramètres de langue"
+  },
+  "navigation": {
+    "languageSettings": "Paramètres de langue",
+    "languageSettingsDesc": "Changer la langue de l'application",
+    "userManagement": "Gestion des utilisateurs",
+    "userManagementDesc": "Créer, modifier et gérer les utilisateurs"
+  },
+  "languageSettings": {
+    "title": "Paramètres de langue",
+    "subtitle": "Sélectionnez votre langue préférée pour changer l'interface d'application complète",
+    "currentLanguage": "Langue actuelle",
+    "selectLanguage": "Sélectionner la langue",
+    "aboutTitle": "À propos des paramètres de langue",
+    "info1": "Sélectionnez n'importe quelle langue pour changer l'interface de l'application",
+    "info2": "Votre préférence de langue est enregistrée automatiquement",
+    "info3": "Supporte 13 grandes langues internationales",
+    "info4": "Les modifications s'appliquent immédiatement dans l'ensemble de l'application",
+    "supporting": "Soutenant",
+    "languages": "langues du monde entier"
+  },
+  "users": {
+    "title": "Gestion des utilisateurs",
+    "subtitle": "Administrez et organisez vos utilisateurs",
+    "fetchAll": "Obtenir tous les utilisateurs",
+    "createNew": "Créer un nouvel utilisateur",
+    "noUsers": "Aucun utilisateur trouvé. Cliquez sur 'Obtenir tous les utilisateurs' pour charger.",
+    "addUser": "Ajouter un utilisateur",
+    "name": "Nom",
+    "email": "Email",
+    "role": "Rôle",
+    "actions": "Actions",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "id": "ID",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "failedFetch": "Erreur lors du chargement des utilisateurs",
+    "failedCreate": "Erreur lors de la création de l'utilisateur",
+    "failedDelete": "Erreur lors de la suppression de l'utilisateur"
+  },
+  "roles": {
+    "user": "Utilisateur",
+    "admin": "Administrateur",
+    "moderator": "Modérateur"
+  }
+}

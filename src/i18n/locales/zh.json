@@ -1,0 +1,50 @@
+﻿{
+    "navigation":  {
+                       "userManagementDesc":  "创建、编辑和管理用户",
+                       "languageSettings":  "语言设置",
+                       "languageSettingsDesc":  "更改应用程序语言",
+                       "userManagement":  "用户管理"
+                   },
+    "dashboard":  {
+                      "subtitle":  "管理翻译和语言设置",
+                      "title":  "翻译中心"
+                  },
+    "users":  {
+                  "id":  "ID",
+                  "delete":  "删除",
+                  "loading":  "加载中...",
+                  "title":  "用户管理",
+                  "edit":  "编辑",
+                  "error":  "错误",
+                  "noUsers":  "未找到用户。点击获取所有用户加载。",
+                  "role":  "角色",
+                  "fetchAll":  "获取所有用户",
+                  "failedDelete":  "删除用户失败",
+                  "addUser":  "添加用户",
+                  "email":  "Email",
+                  "createNew":  "创建新用户",
+                  "subtitle":  "管理和组织您的用户",
+                  "actions":  "操作",
+                  "name":  "名字",
+                  "failedCreate":  "创建用户失败",
+                  "failedFetch":  "获取用户失败"
+              },
+    "languageSettings":  {
+                             "info1":  "选择任何语言以更改应用程序界面",
+                             "languages":  "来自世界各地的语言",
+                             "aboutTitle":  "关于语言设置",
+                             "subtitle":  "选择您喜欢的语言以更改整个应用程序界面",
+                             "supporting":  "支持",
+                             "selectLanguage":  "选择语言",
+                             "info4":  "更改立即应用于整个应用程序",
+                             "currentLanguage":  "当前语言",
+                             "title":  "语言设置",
+                             "info3":  "支持13种主要国际语言",
+                             "info2":  "您的语言偏好将自动保存"
+                         },
+    "roles":  {
+                  "admin":  "管理员",
+                  "user":  "用户",
+                  "moderator":  "版主"
+              }
+}

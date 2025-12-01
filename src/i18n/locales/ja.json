@@ -1,0 +1,50 @@
+﻿{
+    "navigation":  {
+                       "userManagementDesc":  "ユーザーを作成、編集、管理する",
+                       "languageSettings":  "言語設定",
+                       "languageSettingsDesc":  "アプリケーション言語を変更",
+                       "userManagement":  "ユーザー管理"
+                   },
+    "dashboard":  {
+                      "subtitle":  "翻訳と言語設定を管理する",
+                      "title":  "翻訳ハブ"
+                  },
+    "users":  {
+                  "id":  "ID",
+                  "delete":  "削除",
+                  "loading":  "読み込み中...",
+                  "title":  "ユーザー管理",
+                  "edit":  "編集",
+                  "error":  "エラー",
+                  "noUsers":  "ユーザーが見つかりません。すべてのユーザーを取得をクリックして読み込みます。",
+                  "role":  "役割",
+                  "fetchAll":  "すべてのユーザーを取得",
+                  "failedDelete":  "ユーザーの削除に失敗しました",
+                  "addUser":  "ユーザーを追加",
+                  "email":  "Email",
+                  "createNew":  "新規ユーザーを作成",
+                  "subtitle":  "ユーザーを管理し、整理します",
+                  "actions":  "アクション",
+                  "name":  "名前",
+                  "failedCreate":  "ユーザーの作成に失敗しました",
+                  "failedFetch":  "ユーザーの取得に失敗しました"
+              },
+    "languageSettings":  {
+                             "info1":  "任意の言語を選択してアプリケーションインターフェイスを変更します",
+                             "languages":  "世界中の言語",
+                             "aboutTitle":  "言語設定について",
+                             "subtitle":  "アプリケーション全体のインターフェイスを変更するために、希望する言語を選択してください",
+                             "supporting":  "サポート",
+                             "selectLanguage":  "言語を選択",
+                             "info4":  "変更はアプリケーション全体に即座に適用されます",
+                             "currentLanguage":  "現在の言語",
+                             "title":  "言語設定",
+                             "info3":  "13の主要な国際言語をサポートしています",
+                             "info2":  "言語の設定が自動的に保存されます"
+                         },
+    "roles":  {
+                  "admin":  "管理者",
+                  "user":  "ユーザー",
+                  "moderator":  "モデレーター"
+              }
+}

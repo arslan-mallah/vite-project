@@ -1,0 +1,50 @@
+{
+  "dashboard": {
+    "title": "Translation Hub",
+    "subtitle": "Manage translations and language settings"
+  },
+  "navigation": {
+    "languageSettings": "Language Settings",
+    "languageSettingsDesc": "Change application language",
+    "userManagement": "User Management",
+    "userManagementDesc": "Create, edit, and manage users"
+  },
+  "languageSettings": {
+    "title": "Language Settings",
+    "subtitle": "Select your preferred language to change the entire application interface",
+    "currentLanguage": "Current Language",
+    "selectLanguage": "Select Language",
+    "aboutTitle": "About Language Settings",
+    "info1": "Select any language to change the app interface",
+    "info2": "Your language preference is saved automatically",
+    "info3": "Supports 13 major international languages",
+    "info4": "Changes apply immediately across the entire application",
+    "supporting": "Supporting",
+    "languages": "languages from around the world"
+  },
+  "users": {
+    "title": "User Management",
+    "subtitle": "Manage and organize your users",
+    "fetchAll": "Fetch All Users",
+    "createNew": "Create New User",
+    "noUsers": "No users found. Click 'Fetch All Users' to load.",
+    "addUser": "Add User",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "actions": "Actions",
+    "delete": "Delete",
+    "edit": "Edit",
+    "id": "ID",
+    "loading": "Loading...",
+    "error": "Error",
+    "failedFetch": "Failed to fetch users",
+    "failedCreate": "Failed to create user",
+    "failedDelete": "Failed to delete user"
+  },
+  "roles": {
+    "user": "User",
+    "admin": "Admin",
+    "moderator": "Moderator"
+  }
+}
