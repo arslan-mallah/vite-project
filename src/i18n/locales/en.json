@@ -1,13 +1,19 @@
 {
   "dashboard": {
     "title": "Translation Hub",
-    "subtitle": "Manage translations and language settings"
+    "subtitle": "Manage translations and language settings",
+    "logout": "Logout"
+  },
+  "app": {
+    "name": "My App"
   },
   "navigation": {
     "languageSettings": "Language Settings",
     "languageSettingsDesc": "Change application language",
     "userManagement": "User Management",
-    "userManagementDesc": "Create, edit, and manage users"
+    "userManagementDesc": "Create, edit, and manage users",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "keyboardShortcutsDesc": "Create and manage keyboard shortcuts"
   },
   "languageSettings": {
     "title": "Language Settings",
@@ -46,5 +52,47 @@
     "user": "User",
     "admin": "Admin",
     "moderator": "Moderator"
+  },
+  "auth": {
+    "login": "Welcome Back",
+    "loginSubtitle": "Sign in to your account to continue",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "clear": "Clear",
+    "demoCredentials": "Demo Credentials"
+  },
+  "shortcuts": {
+    "title": "Keyboard Shortcuts",
+    "desc": "Manage and create keyboard shortcuts for your application",
+    "createNew": "Create New Shortcut",
+    "idLabel": "Shortcut ID",
+    "idPlaceholder": "e.g., save-document",
+    "nameLabel": "Shortcut Name",
+    "namePlaceholder": "e.g., Save Document",
+    "pressKeysLabel": "Press Keys",
+    "pressKeysPlaceholder": "Press keys (Ctrl+S, Shift+N, etc.)",
+    "categoryLabel": "Category",
+    "category": {
+      "custom": "Custom",
+      "navigation": "Navigation",
+      "editing": "Editing",
+      "global": "Global"
+    },
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe what this shortcut does",
+    "addButton": "Add Shortcut",
+    "allShortcuts": "All Shortcuts ({{count}})",
+    "noShortcuts": "No shortcuts registered yet. Create one above!",
+    "totalShortcuts": "Total Shortcuts",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "status": "Status",
+    "enable": "Enable",
+    "disable": "Disable",
+    "delete": "Delete"
   }
 }

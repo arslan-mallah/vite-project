@@ -117,9 +117,9 @@ export function KeyboardShortcutManagement() {
 
   return (
     <div style={{ padding: 40, maxWidth: 1200, margin: '0 auto', minHeight: '100vh' }}>
-      <h1 style={{ marginBottom: 10 }}>⌨️ Keyboard Shortcuts</h1>
+      <h1 style={{ marginBottom: 10 }}>⌨️ {t('shortcuts.title')}</h1>
       <p style={{ fontSize: 16, color: '#666', marginBottom: 40 }}>
-        Manage and create keyboard shortcuts for your application
+        {t('shortcuts.desc')}
       </p>
 
       {/* Add New Shortcut Section */}
@@ -132,15 +132,15 @@ export function KeyboardShortcutManagement() {
           border: '2px solid #e0e0e0',
         }}
       >
-        <h3 style={{ marginTop: 0 }}>➕ Create New Shortcut</h3>
+        <h3 style={{ marginTop: 0 }}>➕ {t('shortcuts.createNew')}</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15, marginBottom: 15 }}>
           <div>
             <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-              Shortcut ID *
+              {t('shortcuts.idLabel')}
             </label>
             <input
               type="text"
-              placeholder="e.g., save-document"
+              placeholder={t('shortcuts.idPlaceholder')}
               value={newShortcut.id}
               onChange={(e) => setNewShortcut({ ...newShortcut, id: e.target.value })}
               style={{
@@ -156,11 +156,11 @@ export function KeyboardShortcutManagement() {
 
           <div>
             <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-              Shortcut Name *
+              {t('shortcuts.nameLabel')}
             </label>
             <input
               type="text"
-              placeholder="e.g., Save Document"
+              placeholder={t('shortcuts.namePlaceholder')}
               value={newShortcut.name}
               onChange={(e) => setNewShortcut({ ...newShortcut, name: e.target.value })}
               style={{
@@ -176,11 +176,11 @@ export function KeyboardShortcutManagement() {
 
           <div>
             <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
-              Press Keys *
+              {t('shortcuts.pressKeysLabel')}
             </label>
             <input
               type="text"
-              placeholder="Press keys (Ctrl+S, Shift+N, etc.)"
+              placeholder={t('shortcuts.pressKeysPlaceholder')}
               value={newShortcut.keys.length > 0 ? keyboardShortcutService.formatShortcut(newShortcut.keys) : ''}
               onKeyDown={handleKeyCapture}
               readOnly
@@ -197,7 +197,7 @@ export function KeyboardShortcutManagement() {
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Category</label>
+            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>{t('shortcuts.categoryLabel')}</label>
             <select
               value={newShortcut.category}
               onChange={(e) =>
@@ -214,17 +214,17 @@ export function KeyboardShortcutManagement() {
                 fontSize: 14,
               }}
             >
-              <option value="custom">Custom</option>
-              <option value="navigation">Navigation</option>
-              <option value="editing">Editing</option>
-              <option value="global">Global</option>
+              <option value="custom">{t('shortcuts.category.custom')}</option>
+              <option value="navigation">{t('shortcuts.category.navigation')}</option>
+              <option value="editing">{t('shortcuts.category.editing')}</option>
+              <option value="global">{t('shortcuts.category.global')}</option>
             </select>
           </div>
 
           <div style={{ gridColumn: '1 / -1' }}>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>Description</label>
+            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>{t('shortcuts.descriptionLabel')}</label>
             <textarea
-              placeholder="Describe what this shortcut does"
+              placeholder={t('shortcuts.descriptionPlaceholder')}
               value={newShortcut.description}
               onChange={(e) => setNewShortcut({ ...newShortcut, description: e.target.value })}
               style={{
@@ -256,16 +256,16 @@ export function KeyboardShortcutManagement() {
           onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#45a049')}
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#4CAF50')}
         >
-          Add Shortcut
+          {t('shortcuts.addButton')}
         </button>
       </div>
 
       {/* Shortcuts List */}
-      <h3 style={{ marginBottom: 20 }}>📋 All Shortcuts ({shortcuts.length})</h3>
+      <h3 style={{ marginBottom: 20 }}>📋 {t('shortcuts.allShortcuts', { count: shortcuts.length })}</h3>
 
       {shortcuts.length === 0 ? (
         <div style={{ padding: 20, backgroundColor: '#f5f5f5', borderRadius: 8, textAlign: 'center' }}>
-          <p style={{ color: '#999' }}>No shortcuts registered yet. Create one above!</p>
+          <p style={{ color: '#999' }}>{t('shortcuts.noShortcuts')}</p>
         </div>
       ) : (
         <div
@@ -299,7 +299,7 @@ export function KeyboardShortcutManagement() {
                     fontWeight: 'bold',
                   }}
                 >
-                  {shortcut.category}
+                  {t(`shortcuts.category.${shortcut.category}`) || shortcut.category}
                 </div>
               </div>
 
@@ -325,10 +325,10 @@ export function KeyboardShortcutManagement() {
 
               <div style={{ marginBottom: 10 }}>
                 <p style={{ margin: '5px 0', fontSize: 12, color: '#999' }}>
-                  ID: <code style={{ backgroundColor: '#f0f0f0', padding: '2px 4px' }}>{shortcut.id}</code>
+                  {t('shortcuts.idLabel')}: <code style={{ backgroundColor: '#f0f0f0', padding: '2px 4px' }}>{shortcut.id}</code>
                 </p>
                 <p style={{ margin: '5px 0', fontSize: 12, color: shortcut.enabled ? '#4CAF50' : '#F44336' }}>
-                  Status: {shortcut.enabled ? '✅ Enabled' : '❌ Disabled'}
+                  {t('shortcuts.status')}: {shortcut.enabled ? `✅ ${t('shortcuts.enabled')}` : `❌ ${t('shortcuts.disabled')}`}
                 </p>
               </div>
 
@@ -347,7 +347,7 @@ export function KeyboardShortcutManagement() {
                     fontWeight: 'bold',
                   }}
                 >
-                  {shortcut.enabled ? 'Disable' : 'Enable'}
+                  {shortcut.enabled ? t('shortcuts.disable') : t('shortcuts.enable')}
                 </button>
 
                 <button
@@ -364,7 +364,7 @@ export function KeyboardShortcutManagement() {
                     fontWeight: 'bold',
                   }}
                 >
-                  Delete
+                  {t('shortcuts.delete')}
                 </button>
               </div>
             </div>
@@ -383,7 +383,7 @@ export function KeyboardShortcutManagement() {
             textAlign: 'center',
           }}
         >
-          <h3 style={{ margin: 0, color: '#2196F3' }}>Total Shortcuts</h3>
+          <h3 style={{ margin: 0, color: '#2196F3' }}>{t('shortcuts.totalShortcuts')}</h3>
           <p style={{ fontSize: 32, margin: '10px 0 0 0', fontWeight: 'bold', color: '#2196F3' }}>
             {shortcuts.length}
           </p>
@@ -398,7 +398,7 @@ export function KeyboardShortcutManagement() {
             textAlign: 'center',
           }}
         >
-          <h3 style={{ margin: 0, color: '#4CAF50' }}>Enabled</h3>
+          <h3 style={{ margin: 0, color: '#4CAF50' }}>{t('shortcuts.enabled')}</h3>
           <p style={{ fontSize: 32, margin: '10px 0 0 0', fontWeight: 'bold', color: '#4CAF50' }}>
             {shortcuts.filter((s) => s.enabled).length}
           </p>
@@ -413,7 +413,7 @@ export function KeyboardShortcutManagement() {
             textAlign: 'center',
           }}
         >
-          <h3 style={{ margin: 0, color: '#FF9800' }}>Disabled</h3>
+          <h3 style={{ margin: 0, color: '#FF9800' }}>{t('shortcuts.disabled')}</h3>
           <p style={{ fontSize: 32, margin: '10px 0 0 0', fontWeight: 'bold', color: '#FF9800' }}>
             {shortcuts.filter((s) => !s.enabled).length}
           </p>

@@ -1,21 +1,64 @@
-
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './core/context/AuthContext';
+import { ProtectedRoute } from './core/components/ProtectedRoute';
+import { useAppShortcuts } from './core/hooks/useAppShortcuts';
 import { Dashboard } from './core/Dashboard';
 import { UserManagementComponent } from './features/users/UserManagement';
 import { TranslationManagement } from './features/settings/TranslationManagement';
 import { KeyboardShortcutManagement } from './features/settings/KeyboardShortcutManagement';
+import { Login } from './features/auth/Login';
+
+function AppContent() {
+  // Initialize app-wide keyboard shortcuts
+  useAppShortcuts();
+
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/users"
+        element={
+          <ProtectedRoute>
+            <UserManagementComponent />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/translations"
+        element={
+          <ProtectedRoute>
+            <TranslationManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/shortcuts"
+        element={
+          <ProtectedRoute>
+            <KeyboardShortcutManagement />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  );
+}
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/users" element={<UserManagementComponent />} />
-        <Route path="/translations" element={<TranslationManagement />} />
-        <Route path="/shortcuts" element={<KeyboardShortcutManagement />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
