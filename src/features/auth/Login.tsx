@@ -52,7 +52,7 @@ export default function Login() {
   }, [i18n]);
 
   return (
-    <div className="w-full h-screen flex overflow-x-hidden bg-white">
+    <div className="h-screen flex overflow-x-hidden bg-white">
       {/* LEFT SIDE - WHITE BACKGROUND */}
       <div className="relative w-1/2 bg-white flex flex-col items-center justify-center px-12 py-12 overflow-y-auto">
         {/* Language Selector - Top Left on White Side */}
@@ -92,12 +92,12 @@ export default function Login() {
         </div>
 
         {/* Translatable Description Text */}
-        <div className="max-w-lg text-center mb-16">
+        <div className="w-3/4 text-center mb-16">
           {/* <p className="text-sm text-gray-700 leading-relaxed">
             {t('auth.companyDescription', 'This system is licensed and developed for managing intellectual property resources.')}
           </p> */}
-          <p 
-  className={`max-w-lg text-center mb-0 font-bold text-sm ${
+            <p 
+          className={`text-center mb-0 font-bold text-sm ${
     isArabic 
       ? 'text-right' 
       : 'text-left'
@@ -125,19 +125,13 @@ export default function Login() {
 </span>
 </p>
         </div>
-
-        {/* Footer Legal Text */}
-        {/* <div className="mt-auto text-center text-xs text-gray-500">
-          <p>© 2024 - {year} {t('auth.copyright', 'All Rights Reserved')}</p>
-          <p className="mt-2">{t('auth.version', 'SAMCOTEC v ERP - 3.4.01')}</p>
-        </div> */}
       </div>
 
       {/* RIGHT SIDE - BLUE BACKGROUND */}
       <div className="w-1/2 bg-gradient-to-b from-sky-300 to-sky-400 flex flex-col items-center justify-center px-12 py-12 relative overflow-y-auto">
 
         {/* LOGIN FORM BOX */}
-        <div className="w-full max-w-sm bg-black bg-opacity-95 rounded-xl shadow-2xl p-8">
+        <div className="w-1/2 bg-black bg-opacity-95 rounded-xl shadow-2xl p-8">
           {/* Form Title */}
           <h1 className="text-white text-lg font-bold text-center mb-8">{t('auth.login', 'Login')}</h1>
 
@@ -227,7 +221,7 @@ export default function Login() {
         </div>
 
         {/* Technical Support Section - Below Form */}
-        <div className="mt-12 text-center w-full max-w-sm">
+        <div className="mt-12 text-center w-3/4">
           <p className="text-white text-sm font-bold mb-4">{t('auth.technicalSupport', 'For Technical Support')}</p>
           <div className="bg-white rounded-lg px-6 py-4 shadow-lg">
             <p className="text-gray-800 text-sm font-bold">

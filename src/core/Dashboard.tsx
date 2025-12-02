@@ -31,10 +31,11 @@ export function Dashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+
       {/* Header */}
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40 shadow-sm w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo & Brand */}
             <div className="flex items-center gap-3">
@@ -86,7 +87,7 @@ export function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-12">
         {/* Welcome Section */}
         <div className="mb-12">
           <div className="inline-block">
@@ -94,7 +95,7 @@ export function Dashboard() {
               {t('dashboard.welcome', 'Welcome to Dashboard')}
             </h2>
           </div>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
+          <p className="text-lg text-slate-600 dark:text-slate-300">
             {t('dashboard.subtitle')}
           </p>
         </div>
