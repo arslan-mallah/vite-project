@@ -1,37 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../core/context/AuthContext';
 
-export function Login() {
+export default function Login() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { login, isLoading } = useAuth();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+
+  const isArabic = i18n.language === 'ar';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    // Very small mock validation: accept any non-empty credentials
     if (!username.trim() || !password.trim()) {
-      setError('Please enter both username and password');
+      setError(t('auth.loginErrorEmpty', 'Please enter both username and password'));
       return;
     }
 
-    // Use auth service to login
     const result = await login(username, password);
     if (result.success) {
       navigate('/');
     } else {
-      setError(result.error || 'Login failed');
+      setError(result.error || t('auth.loginFailed', 'Login failed'));
     }
   };
 
-  // Local shortcut for Ctrl+L to change language (ensures it works on this page)
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    document.documentElement.lang = lang;
+  };
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key.toLowerCase() === 'l') {
@@ -40,218 +44,198 @@ export function Login() {
         const cur = (i18n?.language || 'en').split('-')[0];
         const idx = languages.indexOf(cur);
         const next = languages[(idx + 1) % languages.length];
-        i18n.changeLanguage(next);
-
-        const toast = document.createElement('div');
-        toast.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 10px 14px; border-radius: 6px; z-index: 10000; font-weight: 600;';
-        toast.textContent = `🌐 Language: ${next.toUpperCase()}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 1600);
+        changeLanguage(next);
       }
     };
-
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [i18n]);
 
-
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      margin: 0,
-      padding: 0,
-      position: 'fixed',
-      width: '100%',
-      height: '100%',
-      top: 0,
-      left: 0,
-    }}>
-      <div style={{
-        width: '100%',
-        maxWidth: 450,
-        background: 'white',
-        padding: 40,
-        borderRadius: 16,
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-        animation: 'slideUp 0.6s ease-out',
-        margin: '0 auto',
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>🔐</div>
-          <h1 style={{ margin: '0 0 8px 0', fontSize: 32, color: '#333', fontWeight: 700 }}>
-            {t('auth.login', 'Welcome Back')}
-          </h1>
-          <p style={{ margin: 0, color: '#999', fontSize: 14 }}>
-            {t('auth.loginSubtitle', 'Sign in to your account to continue')}
-          </p>
+    <div className="w-full h-screen flex overflow-x-hidden bg-white">
+      {/* LEFT SIDE - WHITE BACKGROUND */}
+      <div className="relative w-1/2 bg-white flex flex-col items-center justify-center px-12 py-12 overflow-y-auto">
+        {/* Language Selector - Top Left on White Side */}
+        <div className="absolute top-6 left-6">
+          <div className="flex gap-0 bg-white rounded overflow-hidden shadow-lg">
+            <button
+              onClick={() => changeLanguage('en')}
+              className={`px-6 py-2 font-bold text-sm transition ${
+                i18n.language === 'en' ? 'bg-sky-400 text-white' : 'bg-white text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              English
+            </button>
+            <button
+              onClick={() => changeLanguage('ar')}
+              className={`px-6 py-2 font-bold text-sm border-l transition ${
+                i18n.language === 'ar' ? 'bg-sky-400 text-white' : 'bg-white text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              عربي
+            </button>
+          </div>
+        </div>
+        
+        {/* First Logo - ACEP */}
+        <div className="mb-16 text-center">
+          <div className="inline-flex items-center justify-center h-20 w-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mb-4 shadow-lg">
+            <span className="text-3xl">🏛️</span>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ display: 'block', marginBottom: 8, fontWeight: 600, color: '#333', fontSize: 14 }}>
-              {t('auth.username', 'Username')}
-            </label>
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder={t('auth.usernamePlaceholder', 'Enter your username')}
-              disabled={isLoading}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                borderRadius: 8,
-                border: '2px solid #e0e0e0',
-                fontSize: 14,
-                transition: 'all 0.3s ease',
-                backgroundColor: isLoading ? '#f5f5f5' : 'white',
-                boxSizing: 'border-box',
-              }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = '#667eea')}
-              onBlur={(e) => (e.currentTarget.style.borderColor = '#e0e0e0')}
-            />
+        {/* Second Logo - Shield */}
+        <div className="mb-16 text-center">
+          <div className="inline-flex items-center justify-center h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full mb-4 shadow-lg">
+            <span className="text-3xl">🛡️</span>
           </div>
+        </div>
 
-          <div style={{ marginBottom: 24 }}>
-            <label style={{ display: 'block', marginBottom: 8, fontWeight: 600, color: '#333', fontSize: 14 }}>
-              {t('auth.password', 'Password')}
-            </label>
-            <div style={{ position: 'relative' }}>
+        {/* Translatable Description Text */}
+        <div className="max-w-lg text-center mb-16">
+          {/* <p className="text-sm text-gray-700 leading-relaxed">
+            {t('auth.companyDescription', 'This system is licensed and developed for managing intellectual property resources.')}
+          </p> */}
+          <p 
+  className={`max-w-lg text-center mb-0 font-bold text-sm ${
+    isArabic 
+      ? 'text-right' 
+      : 'text-left'
+  }`}
+>
+  {isArabic ? 
+    <span className="font-extrabold text-red-600">تحذيـر: </span>
+    : 
+    <span className="font-extrabold text-red-600">Warning: </span>
+  }
+ <span className="text-gray-600">
+  {isArabic ? 
+    <>
+      {'يمنع إعادة إنتاج البرنامج وملحقاته بشكل كامـل أو تقليـده دون زيـادة أو نقصان أو أجراء أي تعديل عليه هذا المنتج تملكة شركة سام لتقنية المعلومات المحدوده – الرياض بموجب العلامه التجارية SAMCOTEC'} 
+      <br />
+      {'باعتماد الهيئة السعودية للملكية الفكرية برقم: 1435022395 وتاريخ 05-01-1436'}
+    </>
+    : 
+    <>
+      {'It is prohibited to reproduce or imitate the program and its annexes, in whole, without addition or reduction, or to make any modification to it. This product is owned by SAM Information Technology Co. Ltd. – Riyadh under the trademark SAMCOTEC,'} 
+      <br />
+      {'with the approval of the Saudi Authority for Intellectual Property, bearing registration number: 1435022395 and dated 05-01-1436.'}
+    </>
+  }
+</span>
+</p>
+        </div>
+
+        {/* Footer Legal Text */}
+        {/* <div className="mt-auto text-center text-xs text-gray-500">
+          <p>© 2024 - {year} {t('auth.copyright', 'All Rights Reserved')}</p>
+          <p className="mt-2">{t('auth.version', 'SAMCOTEC v ERP - 3.4.01')}</p>
+        </div> */}
+      </div>
+
+      {/* RIGHT SIDE - BLUE BACKGROUND */}
+      <div className="w-1/2 bg-gradient-to-b from-sky-300 to-sky-400 flex flex-col items-center justify-center px-12 py-12 relative overflow-y-auto">
+
+        {/* LOGIN FORM BOX */}
+        <div className="w-full max-w-sm bg-black bg-opacity-95 rounded-xl shadow-2xl p-8">
+          {/* Form Title */}
+          <h1 className="text-white text-lg font-bold text-center mb-8">{t('auth.login', 'Login')}</h1>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Username Input */}
+            <div>
+              <label className="text-white text-xs font-bold block mb-2">
+                {isArabic ? 'اسم الدخول' : 'Username'}
+              </label>
               <input
-                type={showPassword ? 'text' : 'password'}
+                id="username"
+                name="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={isLoading}
+                className="w-full px-4 py-3 bg-white text-black text-sm rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+                placeholder="100"
+                aria-required
+              />
+            </div>
+
+            {/* Password Input */}
+            <div>
+              <label className="text-white text-xs font-bold block mb-2">
+                {isArabic ? 'كلمة المرور' : 'Password'}
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('auth.passwordPlaceholder', 'Enter your password')}
                 disabled={isLoading}
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  paddingRight: 44,
-                  borderRadius: 8,
-                  border: '2px solid #e0e0e0',
-                  fontSize: 14,
-                  transition: 'all 0.3s ease',
-                  backgroundColor: isLoading ? '#f5f5f5' : 'white',
-                  boxSizing: 'border-box',
-                }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = '#667eea')}
-                onBlur={(e) => (e.currentTarget.style.borderColor = '#e0e0e0')}
+                className="w-full px-4 py-3 bg-white text-black text-sm rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+                placeholder="······"
+                aria-required
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  right: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 18,
-                }}
+            </div>
+
+            {/* Year Select */}
+            <div>
+              <label htmlFor="year" className="sr-only">Year</label>
+              <select
+                id="year"
+                value={year}
+                onChange={(e) => setYear(parseInt(e.target.value, 10))}
+                className="w-full px-4 py-3 bg-white text-black text-sm rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
               >
-                {showPassword ? '👁️' : '👁️‍🗨️'}
-              </button>
+                {[2020, 2021, 2022, 2023, 2024, 2025].map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
             </div>
+
+            {/* Error Message */}
+            {error && (
+              <div role="alert" className="p-3 bg-red-500 bg-opacity-30 border border-red-400 rounded text-red-200 text-xs">
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3 bg-sky-400 hover:bg-sky-500 disabled:bg-gray-500 text-white font-bold rounded transition duration-200"
+            >
+              {isLoading ? (
+                <>
+                  {isArabic ? 'جاري تسجيل الدخول...' : 'Signing in...'}
+                </>
+              ) : (
+                <>
+                  {isArabic ? 'تسجيل دخول' : 'Sign In'}
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Version Info Inside Form */}
+          <div className="mt-6 text-center">
+            <p className="text-gray-400 text-xs">{t('auth.version', 'SAMCOTEC v ERP - 3.4.01')}</p>
           </div>
+        </div>
 
-          {error && (
-            <div style={{
-              color: '#d32f2f',
-              marginBottom: 16,
-              padding: 12,
-              backgroundColor: '#ffebee',
-              borderRadius: 8,
-              fontSize: 13,
-              fontWeight: 500,
-            }}>
-              ❌ {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            style={{
-              width: '100%',
-              padding: '12px 16px',
-              background: isLoading ? '#ccc' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 8,
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              fontSize: 16,
-              fontWeight: 600,
-              transition: 'all 0.3s ease',
-              marginBottom: 12,
-            }}
-            onMouseOver={(e) => !isLoading && (e.currentTarget.style.transform = 'translateY(-2px)', e.currentTarget.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.4)')}
-            onMouseOut={(e) => !isLoading && (e.currentTarget.style.transform = 'translateY(0)', e.currentTarget.style.boxShadow = 'none')}
-          >
-            {isLoading ? '🔄 ' + t('auth.signingIn', 'Signing in...') : t('auth.signIn', 'Sign In')}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setUsername(''); setPassword(''); setError(null); }}
-            disabled={isLoading}
-            style={{
-              width: '100%',
-              padding: '12px 16px',
-              background: '#f5f5f5',
-              color: '#333',
-              border: 'none',
-              borderRadius: 8,
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              fontSize: 14,
-              fontWeight: 600,
-              transition: 'all 0.3s ease',
-            }}
-            onMouseOver={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#e8e8e8')}
-            onMouseOut={(e) => !isLoading && (e.currentTarget.style.backgroundColor = '#f5f5f5')}
-          >
-            {t('auth.clear', 'Clear')}
-          </button>
-        </form>
-
-        <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid #e0e0e0' }}>
-          <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#999', fontWeight: 500 }}>
-            📝 {t('auth.demoCredentials', 'Demo Credentials')}
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 12 }}>
-            <div style={{ padding: 8, backgroundColor: '#f9f9f9', borderRadius: 6, fontFamily: 'monospace' }}>
-              <strong style={{ color: '#667eea' }}>demo</strong> / demo
-            </div>
-            <div style={{ padding: 8, backgroundColor: '#f9f9f9', borderRadius: 6, fontFamily: 'monospace' }}>
-              <strong style={{ color: '#667eea' }}>admin</strong> / admin123
-            </div>
-            <div style={{ padding: 8, backgroundColor: '#f9f9f9', borderRadius: 6, fontFamily: 'monospace', gridColumn: '1 / -1' }}>
-              <strong style={{ color: '#667eea' }}>user</strong> / user123
-            </div>
+        {/* Technical Support Section - Below Form */}
+        <div className="mt-12 text-center w-full max-w-sm">
+          <p className="text-white text-sm font-bold mb-4">{t('auth.technicalSupport', 'For Technical Support')}</p>
+          <div className="bg-white rounded-lg px-6 py-4 shadow-lg">
+            <p className="text-gray-800 text-sm font-bold">
+              {t('auth.contact1', '0112297553')} - {t('auth.contact2', '0565100268')}
+            </p>
           </div>
         </div>
       </div>
-
-      <style>
-        {`
-          @keyframes slideUp {
-            from {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-        `}
-      </style>
     </div>
   );
 }
-
-export default Login;

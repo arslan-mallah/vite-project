@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { PageWrapper } from '../../core/components/PageWrapper';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -26,70 +27,77 @@ export function TranslationManagement() {
   const currentLang = languages.find(l => l.code === i18n.language);
 
   return (
-    <div style={{ padding: 40, maxWidth: 800, margin: '0 auto', fontFamily: 'Arial' }}>
-      <h1>🌐 {t('languageSettings.title')}</h1>
-      <p style={{ fontSize: 18, color: '#666', marginBottom: 30 }}>
-        {t('languageSettings.subtitle')}
-      </p>
-
+    <PageWrapper title="🌐 Language Settings" subtitle={t('languageSettings.subtitle')}>
       {/* Current Language Display */}
-      <div style={{ backgroundColor: '#e3f2fd', padding: 20, borderRadius: 8, marginBottom: 30 }}>
-        <h3 style={{ margin: '0 0 10px 0' }}>{t('languageSettings.currentLanguage')}</h3>
-        <p style={{ margin: 0, fontSize: 18, fontWeight: 'bold' }}>
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg mb-8">
+        <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+          {t('languageSettings.currentLanguage')}
+        </h3>
+        <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
           {currentLang?.flag} {currentLang?.name}
         </p>
       </div>
 
       {/* Language Selection Grid */}
-      <h3 style={{ marginBottom: 20 }}>{t('languageSettings.selectLanguage')}</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 15 }}>
-        {languages.map(language => (
-          <button
-            key={language.code}
-            onClick={() => handleLanguageChange(language.code)}
-            style={{
-              padding: 20,
-              fontSize: 16,
-              border: i18n.language === language.code ? '3px solid #2196F3' : '2px solid #ddd',
-              borderRadius: 8,
-              backgroundColor: i18n.language === language.code ? '#e3f2fd' : 'white',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              fontWeight: i18n.language === language.code ? 'bold' : 'normal',
-            }}
-            onMouseOver={e => {
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={e => {
-              e.currentTarget.style.boxShadow = 'none';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <div style={{ fontSize: 32, marginBottom: 10 }}>{language.flag}</div>
-            <div>{language.name}</div>
-            <div style={{ fontSize: 12, color: '#999', marginTop: 5 }}>({language.code.toUpperCase()})</div>
-          </button>
-        ))}
+      <div className="mb-12">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
+          {t('languageSettings.selectLanguage')}
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {languages.map(language => (
+            <button
+              key={language.code}
+              onClick={() => handleLanguageChange(language.code)}
+              className={`group p-4 rounded-lg transition-all duration-300 transform hover:scale-105 ${
+                i18n.language === language.code
+                  ? 'bg-blue-100 dark:bg-blue-900 border-2 border-blue-500 shadow-lg'
+                  : 'bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:shadow-lg'
+              }`}
+            >
+              <div className="text-4xl mb-2">{language.flag}</div>
+              <div className="text-sm font-semibold text-slate-900 dark:text-white mb-1">
+                {language.name}
+              </div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">
+                ({language.code.toUpperCase()})
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Info Section */}
-      <div style={{ marginTop: 40, padding: 20, backgroundColor: '#f5f5f5', borderRadius: 8 }}>
-        <h4 style={{ marginTop: 0 }}>ℹ️ {t('languageSettings.aboutTitle')}</h4>
-        <ul style={{ lineHeight: 1.8, color: '#666' }}>
-          <li>{t('languageSettings.info1')}</li>
-          <li>{t('languageSettings.info2')}</li>
-          <li>{t('languageSettings.info3')}</li>
-          <li>{t('languageSettings.info4')}</li>
+      <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-lg mb-8">
+        <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
+          ℹ️ {t('languageSettings.aboutTitle')}
+        </h4>
+        <ul className="space-y-2 text-slate-600 dark:text-slate-300">
+          <li className="flex items-start">
+            <span className="text-blue-500 mr-3">•</span>
+            <span>{t('languageSettings.info1')}</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-blue-500 mr-3">•</span>
+            <span>{t('languageSettings.info2')}</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-blue-500 mr-3">•</span>
+            <span>{t('languageSettings.info3')}</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-blue-500 mr-3">•</span>
+            <span>{t('languageSettings.info4')}</span>
+          </li>
         </ul>
       </div>
 
       {/* Language Statistics */}
-      <div style={{ marginTop: 20, padding: 20, backgroundColor: '#f9f9f9', borderRadius: 8, textAlign: 'center' }}>
-        <p style={{ color: '#999', fontSize: 14 }}>
-          {t('languageSettings.supporting')} <strong>{languages.length}</strong> {t('languageSettings.languages')} 🌍
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 rounded-lg p-6 text-center text-white">
+        <p className="text-sm opacity-90 mb-1">
+          {t('languageSettings.supporting')} <strong>{languages.length}</strong> {t('languageSettings.languages')}
         </p>
+        <p className="text-3xl font-bold">🌍</p>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

@@ -2,16 +2,20 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../theme';
+import { themePresets } from '../theme/types';
 
 /**
  * App-wide keyboard shortcuts
  * Ctrl+L: Change language
  * Ctrl+S: Login/Submit form
+ * Ctrl+K: Cycle through themes
  */
 export function useAppShortcuts() {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -99,6 +103,42 @@ export function useAppShortcuts() {
           console.log('✅ Navigated to login via Ctrl+S');
         }
       }
+
+      // Ctrl+K: Cycle through themes
+      if (event.ctrlKey && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        
+        const currentThemeName = theme.name || 'Light';
+        const currentIndex = themePresets.findIndex(t => t.name === currentThemeName);
+        const nextIndex = (currentIndex + 1) % themePresets.length;
+        const nextTheme = themePresets[nextIndex];
+        
+        setTheme(nextTheme);
+        console.log(`✅ Theme changed to: ${nextTheme.name}`);
+        
+        // Show toast notification
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: ${nextTheme.primaryColor};
+          color: white;
+          padding: 12px 20px;
+          border-radius: 6px;
+          font-size: 14px;
+          font-weight: 600;
+          z-index: 10000;
+          animation: slideInRight 0.3s ease-out;
+        `;
+        toast.textContent = `🎨 Theme: ${nextTheme.name}`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+          toast.style.animation = 'slideOutRight 0.3s ease-out';
+          setTimeout(() => toast.remove(), 300);
+        }, 2000);
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -106,5 +146,5 @@ export function useAppShortcuts() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [i18n, navigate, isAuthenticated]);
+  }, [i18n, navigate, isAuthenticated, theme, setTheme]);
 }

@@ -210,6 +210,16 @@ Object.keys(resources).forEach((lng) => {
   }
 });
 
+// Ensure `theme` keys exist in all languages (use English defaults as fallback)
+const englishTheme = (enTranslation as any).theme || {};
+Object.keys(resources).forEach((lng) => {
+  const target = (resources as any)[lng];
+  if (target && target.translation) {
+    // do not overwrite existing translations; let existing locale override English defaults
+    target.translation.theme = Object.assign({}, englishTheme, target.translation.theme || {});
+  }
+});
+
 i18n
   .use(initReactI18next)
   .init({

@@ -2,7 +2,14 @@
   "dashboard": {
     "title": "Translation Hub",
     "subtitle": "Manage translations and language settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "welcome": "Welcome to Dashboard",
+    "explore": "Explore",
+    "tips": "Quick Tips",
+    "tipsLanguage": "Change language",
+    "tipsTheme": "Cycle themes",
+    "tipsSubmit": "Quick submit",
+    "tips13Languages": "13 languages supported"
   },
   "app": {
     "name": "My App"
@@ -13,7 +20,9 @@
     "userManagement": "User Management",
     "userManagementDesc": "Create, edit, and manage users",
     "keyboardShortcuts": "Keyboard Shortcuts",
-    "keyboardShortcutsDesc": "Create and manage keyboard shortcuts"
+    "keyboardShortcutsDesc": "Create and manage keyboard shortcuts",
+    "themeBuilder": "Theme Builder",
+    "themeBuilderDesc": "Customize app colors and styles"
   },
   "languageSettings": {
     "title": "Language Settings",
@@ -54,16 +63,30 @@
     "moderator": "Moderator"
   },
   "auth": {
-    "login": "Welcome Back",
-    "loginSubtitle": "Sign in to your account to continue",
+    "login": "Login",
+    "loginSubtitle": "Enter your credentials",
     "username": "Username",
-    "usernamePlaceholder": "Enter your username",
+    "usernamePlaceholder": "Username",
     "password": "Password",
-    "passwordPlaceholder": "Enter your password",
+    "passwordPlaceholder": "Password",
     "signIn": "Sign In",
     "signingIn": "Signing in...",
     "clear": "Clear",
-    "demoCredentials": "Demo Credentials"
+    "demoCredentials": "Demo Credentials",
+    "loginErrorEmpty": "Please enter both username and password",
+    "loginFailed": "Login failed",
+    "togglePassword": "Toggle password visibility",
+    "loginForm": "Login form",
+    "ctrlLHint": "Press Ctrl+L to change language",
+    "companyName": "ACEP",
+    "companyFullName": "Saudi Authority for Intellectual Property",
+    "companyInfo": "Enterprise Resource Planning System",
+    "companyDescription": "This system is licensed and developed for managing intellectual property resources.",
+    "technicalSupport": "For Technical Support",
+    "contact1": "0112297553",
+    "contact2": "0565100268",
+    "version": "SAMCOTEC v ERP - 3.4.01",
+    "copyright": "All Rights Reserved"
   },
   "shortcuts": {
     "title": "Keyboard Shortcuts",
@@ -94,5 +117,31 @@
     "enable": "Enable",
     "disable": "Disable",
     "delete": "Delete"
+  },
+  "theme": {
+    "title": "Theme Builder",
+    "currentTheme": "Current Theme",
+    "quickSwitch": "Press Ctrl+K to cycle themes quickly",
+    "presets": "Theme Presets",
+    "customizeColors": "Customize Colors",
+    "primaryColor": "Primary Color",
+    "secondaryColor": "Secondary Color",
+    "backgroundColor": "Background Color",
+    "textColor": "Text Color",
+    "borderColor": "Border Color",
+    "successColor": "Success Color",
+    "errorColor": "Error Color",
+    "warningColor": "Warning Color",
+    "infoColor": "Info Color",
+    "shareExport": "Share & Export",
+    "copyThemeJson": "Copy Theme JSON",
+    "import": "Import Theme",
+    "showImport": "Show Import Form",
+    "hideImport": "Hide Import Form",
+    "pasteThemeJson": "Paste theme JSON here",
+    "applyImported": "Apply Imported Theme",
+    "colorPreview": "Color Preview",
+    "applied": "applied",
+    "themesAvailable": "Light, Dark, Ocean, Forest, Sunset"
   }
 }

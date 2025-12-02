@@ -46,5 +46,31 @@
     "user": "مستخدم",
     "admin": "مسؤول",
     "moderator": "مراقب"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "loginSubtitle": "أدخل بيانات اعتمادك",
+    "username": "اسم الدخول",
+    "usernamePlaceholder": "اسم الدخول",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "كلمة المرور",
+    "signIn": "تسجيل دخول",
+    "signingIn": "جارٍ تسجيل الدخول...",
+    "clear": "مسح",
+    "demoCredentials": "بيانات اعتماد التجربة",
+    "loginErrorEmpty": "يرجى إدخال اسم الدخول وكلمة المرور",
+    "loginFailed": "فشل تسجيل الدخول",
+    "togglePassword": "إظهار / إخفاء كلمة المرور",
+    "loginForm": "نموذج تسجيل الدخول",
+    "ctrlLHint": "اضغط على Ctrl+L لتغيير اللغة",
+    "companyName": "اسيب",
+    "companyFullName": "الهيئة السعودية للملكية الفكرية",
+    "companyInfo": "نظام تخطيط موارد المؤسسة",
+    "companyDescription": "تم ترخيص هذا النظام وتطويره لإدارة موارد الملكية الفكرية.",
+    "technicalSupport": "للدعم الفني",
+    "contact1": "0112297553",
+    "contact2": "0565100268",
+    "version": "SAMCOTEC v ERP - 3.4.01",
+    "copyright": "جميع الحقوق محفوظة"
   }
 }

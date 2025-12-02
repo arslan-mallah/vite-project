@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { KeyboardShortcut } from '../../core/services/keyboard-shortcut.service';
 import { keyboardShortcutService } from '../../core/services/keyboard-shortcut.service';
+import { PageWrapper } from '../../core/components/PageWrapper';
 
 export function KeyboardShortcutManagement() {
   const { t } = useTranslation();
@@ -99,43 +100,37 @@ export function KeyboardShortcutManagement() {
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      navigation: '#4CAF50',
-      editing: '#2196F3',
-      global: '#FF9800',
-      custom: '#9C27B0',
+      navigation: 'from-green-500 to-green-600',
+      editing: 'from-blue-500 to-blue-600',
+      global: 'from-orange-500 to-orange-600',
+      custom: 'from-purple-500 to-purple-600',
     };
-    return colors[category] || '#757575';
+    return colors[category] || 'from-slate-500 to-slate-600';
   };
 
   if (loading) {
     return (
-      <div style={{ padding: 40, textAlign: 'center' }}>
-        <p>{t('users.loading')}</p>
-      </div>
+      <PageWrapper title="⌨️ Keyboard Shortcuts">
+        <div className="text-center py-12">
+          <p className="text-slate-600 dark:text-slate-300 animate-pulse">{t('users.loading')}</p>
+        </div>
+      </PageWrapper>
     );
   }
 
   return (
-    <div style={{ padding: 40, maxWidth: 1200, margin: '0 auto', minHeight: '100vh' }}>
-      <h1 style={{ marginBottom: 10 }}>⌨️ {t('shortcuts.title')}</h1>
-      <p style={{ fontSize: 16, color: '#666', marginBottom: 40 }}>
-        {t('shortcuts.desc')}
-      </p>
-
+    <PageWrapper 
+      title="⌨️ Keyboard Shortcuts" 
+      subtitle={t('shortcuts.desc')}
+    >
       {/* Add New Shortcut Section */}
-      <div
-        style={{
-          backgroundColor: '#f9f9f9',
-          padding: 20,
-          borderRadius: 8,
-          marginBottom: 40,
-          border: '2px solid #e0e0e0',
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>➕ {t('shortcuts.createNew')}</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15, marginBottom: 15 }}>
+      <div className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 p-6 rounded-lg mb-8">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
+          ➕ {t('shortcuts.createNew')}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               {t('shortcuts.idLabel')}
             </label>
             <input
@@ -143,19 +138,12 @@ export function KeyboardShortcutManagement() {
               placeholder={t('shortcuts.idPlaceholder')}
               value={newShortcut.id}
               onChange={(e) => setNewShortcut({ ...newShortcut, id: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px',
-                border: '1px solid #ddd',
-                borderRadius: 4,
-                fontSize: 14,
-                boxSizing: 'border-box',
-              }}
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               {t('shortcuts.nameLabel')}
             </label>
             <input
@@ -163,19 +151,12 @@ export function KeyboardShortcutManagement() {
               placeholder={t('shortcuts.namePlaceholder')}
               value={newShortcut.name}
               onChange={(e) => setNewShortcut({ ...newShortcut, name: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px',
-                border: '1px solid #ddd',
-                borderRadius: 4,
-                fontSize: 14,
-                boxSizing: 'border-box',
-              }}
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               {t('shortcuts.pressKeysLabel')}
             </label>
             <input
@@ -184,20 +165,14 @@ export function KeyboardShortcutManagement() {
               value={newShortcut.keys.length > 0 ? keyboardShortcutService.formatShortcut(newShortcut.keys) : ''}
               onKeyDown={handleKeyCapture}
               readOnly
-              style={{
-                width: '100%',
-                padding: '10px',
-                border: '2px solid #2196F3',
-                borderRadius: 4,
-                fontSize: 14,
-                backgroundColor: '#e3f2fd',
-                boxSizing: 'border-box',
-              }}
+              className="w-full px-4 py-2 border-2 border-blue-400 dark:border-blue-600 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-slate-900 dark:text-white font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>{t('shortcuts.categoryLabel')}</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              {t('shortcuts.categoryLabel')}
+            </label>
             <select
               value={newShortcut.category}
               onChange={(e) =>
@@ -206,13 +181,7 @@ export function KeyboardShortcutManagement() {
                   category: e.target.value as 'navigation' | 'editing' | 'global' | 'custom',
                 })
               }
-              style={{
-                width: '100%',
-                padding: '10px',
-                border: '1px solid #ddd',
-                borderRadius: 4,
-                fontSize: 14,
-              }}
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="custom">{t('shortcuts.category.custom')}</option>
               <option value="navigation">{t('shortcuts.category.navigation')}</option>
@@ -221,204 +190,113 @@ export function KeyboardShortcutManagement() {
             </select>
           </div>
 
-          <div style={{ gridColumn: '1 / -1' }}>
-            <label style={{ display: 'block', marginBottom: 5, fontWeight: 'bold' }}>{t('shortcuts.descriptionLabel')}</label>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              {t('shortcuts.descriptionLabel')}
+            </label>
             <textarea
               placeholder={t('shortcuts.descriptionPlaceholder')}
               value={newShortcut.description}
               onChange={(e) => setNewShortcut({ ...newShortcut, description: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px',
-                border: '1px solid #ddd',
-                borderRadius: 4,
-                fontSize: 14,
-                minHeight: 60,
-                fontFamily: 'Arial',
-                boxSizing: 'border-box',
-              }}
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-20 resize-none"
             />
           </div>
         </div>
 
         <button
           onClick={handleAddShortcut}
-          style={{
-            padding: '12px 24px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontSize: 16,
-            fontWeight: 'bold',
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#45a049')}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#4CAF50')}
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105"
         >
           {t('shortcuts.addButton')}
         </button>
       </div>
 
       {/* Shortcuts List */}
-      <h3 style={{ marginBottom: 20 }}>📋 {t('shortcuts.allShortcuts', { count: shortcuts.length })}</h3>
+      <div className="mb-8">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
+          📋 {t('shortcuts.allShortcuts', { count: shortcuts.length })}
+        </h3>
 
-      {shortcuts.length === 0 ? (
-        <div style={{ padding: 20, backgroundColor: '#f5f5f5', borderRadius: 8, textAlign: 'center' }}>
-          <p style={{ color: '#999' }}>{t('shortcuts.noShortcuts')}</p>
-        </div>
-      ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-            gap: 15,
-          }}
-        >
-          {shortcuts.map((shortcut) => (
-            <div
-              key={shortcut.id}
-              style={{
-                padding: 20,
-                backgroundColor: 'white',
-                borderRadius: 8,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                border: `3px solid ${getCategoryColor(shortcut.category)}`,
-              }}
-            >
-              <div style={{ marginBottom: 10 }}>
-                <h4 style={{ margin: '0 0 5px 0', color: '#333' }}>{shortcut.name}</h4>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    padding: '4px 8px',
-                    backgroundColor: getCategoryColor(shortcut.category),
-                    color: 'white',
-                    borderRadius: 4,
-                    fontSize: 12,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {t(`shortcuts.category.${shortcut.category}`) || shortcut.category}
+        {shortcuts.length === 0 ? (
+          <div className="p-6 bg-slate-100 dark:bg-slate-800 rounded-lg text-center">
+            <p className="text-slate-500 dark:text-slate-400">{t('shortcuts.noShortcuts')}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {shortcuts.map((shortcut) => (
+              <div
+                key={shortcut.id}
+                className={`bg-white dark:bg-slate-800 rounded-lg p-5 shadow-md border-l-4 border-l-${getCategoryColor(shortcut.category).split(' ')[0]}`}
+              >
+                <div className="mb-4">
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                    {shortcut.name}
+                  </h4>
+                  <div className={`inline-block px-3 py-1 bg-gradient-to-r ${getCategoryColor(shortcut.category)} text-white text-xs font-bold rounded`}>
+                    {t(`shortcuts.category.${shortcut.category}`) || shortcut.category}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <div className="px-3 py-2 bg-slate-100 dark:bg-slate-700 rounded font-mono text-sm font-bold text-blue-600 dark:text-blue-400 mb-3">
+                    {keyboardShortcutService.formatShortcut(shortcut.keys)}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                    {shortcut.description}
+                  </p>
+                </div>
+
+                <div className="mb-4 space-y-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    ID: <code className="bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-slate-700 dark:text-slate-300">{shortcut.id}</code>
+                  </p>
+                  <p className={`text-xs font-semibold ${shortcut.enabled ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                    {shortcut.enabled ? `✅ ${t('shortcuts.enabled')}` : `❌ ${t('shortcuts.disabled')}`}
+                  </p>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleToggleShortcut(shortcut.id)}
+                    className={`flex-1 py-2 px-3 rounded font-semibold text-white text-sm transition-all ${
+                      shortcut.enabled
+                        ? 'bg-orange-500 hover:bg-orange-600'
+                        : 'bg-green-500 hover:bg-green-600'
+                    }`}
+                  >
+                    {shortcut.enabled ? t('shortcuts.disable') : t('shortcuts.enable')}
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteShortcut(shortcut.id)}
+                    className="flex-1 py-2 px-3 bg-red-500 hover:bg-red-600 text-white rounded font-semibold text-sm transition-all"
+                  >
+                    {t('shortcuts.delete')}
+                  </button>
                 </div>
               </div>
-
-              <div style={{ marginBottom: 10 }}>
-                <div
-                  style={{
-                    padding: '10px',
-                    backgroundColor: '#f5f5f5',
-                    borderRadius: 4,
-                    fontFamily: 'monospace',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                    color: '#2196F3',
-                    marginBottom: 8,
-                  }}
-                >
-                  {keyboardShortcutService.formatShortcut(shortcut.keys)}
-                </div>
-                <p style={{ margin: '8px 0', color: '#666', fontSize: 14 }}>
-                  {shortcut.description}
-                </p>
-              </div>
-
-              <div style={{ marginBottom: 10 }}>
-                <p style={{ margin: '5px 0', fontSize: 12, color: '#999' }}>
-                  {t('shortcuts.idLabel')}: <code style={{ backgroundColor: '#f0f0f0', padding: '2px 4px' }}>{shortcut.id}</code>
-                </p>
-                <p style={{ margin: '5px 0', fontSize: 12, color: shortcut.enabled ? '#4CAF50' : '#F44336' }}>
-                  {t('shortcuts.status')}: {shortcut.enabled ? `✅ ${t('shortcuts.enabled')}` : `❌ ${t('shortcuts.disabled')}`}
-                </p>
-              </div>
-
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button
-                  onClick={() => handleToggleShortcut(shortcut.id)}
-                  style={{
-                    flex: 1,
-                    padding: '8px 12px',
-                    backgroundColor: shortcut.enabled ? '#FF9800' : '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                    fontSize: 12,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {shortcut.enabled ? t('shortcuts.disable') : t('shortcuts.enable')}
-                </button>
-
-                <button
-                  onClick={() => handleDeleteShortcut(shortcut.id)}
-                  style={{
-                    flex: 1,
-                    padding: '8px 12px',
-                    backgroundColor: '#F44336',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                    fontSize: 12,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {t('shortcuts.delete')}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Statistics */}
-      <div style={{ marginTop: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 15 }}>
-        <div
-          style={{
-            padding: 20,
-            backgroundColor: '#e3f2fd',
-            borderRadius: 8,
-            border: '2px solid #2196F3',
-            textAlign: 'center',
-          }}
-        >
-          <h3 style={{ margin: 0, color: '#2196F3' }}>{t('shortcuts.totalShortcuts')}</h3>
-          <p style={{ fontSize: 32, margin: '10px 0 0 0', fontWeight: 'bold', color: '#2196F3' }}>
-            {shortcuts.length}
-          </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-lg p-6 text-center text-white shadow-md">
+          <h3 className="text-sm font-semibold mb-2">{t('shortcuts.totalShortcuts')}</h3>
+          <p className="text-4xl font-bold">{shortcuts.length}</p>
         </div>
 
-        <div
-          style={{
-            padding: 20,
-            backgroundColor: '#c8e6c9',
-            borderRadius: 8,
-            border: '2px solid #4CAF50',
-            textAlign: 'center',
-          }}
-        >
-          <h3 style={{ margin: 0, color: '#4CAF50' }}>{t('shortcuts.enabled')}</h3>
-          <p style={{ fontSize: 32, margin: '10px 0 0 0', fontWeight: 'bold', color: '#4CAF50' }}>
-            {shortcuts.filter((s) => s.enabled).length}
-          </p>
+        <div className="bg-gradient-to-br from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 rounded-lg p-6 text-center text-white shadow-md">
+          <h3 className="text-sm font-semibold mb-2">{t('shortcuts.enabled')}</h3>
+          <p className="text-4xl font-bold">{shortcuts.filter((s) => s.enabled).length}</p>
         </div>
 
-        <div
-          style={{
-            padding: 20,
-            backgroundColor: '#ffccbc',
-            borderRadius: 8,
-            border: '2px solid #FF9800',
-            textAlign: 'center',
-          }}
-        >
-          <h3 style={{ margin: 0, color: '#FF9800' }}>{t('shortcuts.disabled')}</h3>
-          <p style={{ fontSize: 32, margin: '10px 0 0 0', fontWeight: 'bold', color: '#FF9800' }}>
-            {shortcuts.filter((s) => !s.enabled).length}
-          </p>
+        <div className="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-lg p-6 text-center text-white shadow-md">
+          <h3 className="text-sm font-semibold mb-2">{t('shortcuts.disabled')}</h3>
+          <p className="text-4xl font-bold">{shortcuts.filter((s) => !s.enabled).length}</p>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

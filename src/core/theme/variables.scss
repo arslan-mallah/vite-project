@@ -1,0 +1,148 @@
+/**
+ * Theme SCSS Variables
+ * These variables are set by the ThemeContext via CSS custom properties
+ * The values come from the theme objects defined in types.ts
+ * 
+ * HOW IT WORKS:
+ * 1. User selects a theme or customizes colors in ThemeBuilder
+ * 2. ThemeContext.tsx updates the theme state
+ * 3. useEffect in ThemeContext applies values as CSS custom properties to :root
+ * 4. SCSS uses these variables via var() function
+ * 5. Components update immediately with new colors
+ */
+
+// ============================================================================
+// PRIMARY COLORS
+// ============================================================================
+// Used for main action buttons, primary links, focus states, highlights
+$primary-color: var(--primary-color, #667eea);
+$secondary-color: var(--secondary-color, #764ba2);
+
+// ============================================================================
+// BACKGROUND & TEXT
+// ============================================================================
+// backgroundColor: Background of the entire application/page
+// textColor: Default text color for readability
+$background-color: var(--background-color, #ffffff);
+$text-color: var(--text-color, #333333);
+
+// ============================================================================
+// BORDER & STRUCTURE
+// ============================================================================
+// borderColor: Dividers, borders on cards, form inputs
+// borderRadius: Rounding for buttons, cards, modals
+$border-color: var(--border-color, #e0e0e0);
+$border-radius: var(--border-radius, 8px);
+
+// ============================================================================
+// SEMANTIC COLORS
+// ============================================================================
+// successColor: Success messages, checkmarks, positive feedback (✓)
+// errorColor: Errors, validation failures, delete actions (✗)
+// warningColor: Warnings, cautions, attention needed (⚠)
+// infoColor: Informational messages, tips, help text (ⓘ)
+$success-color: var(--success-color, #4CAF50);
+$error-color: var(--error-color, #f44336);
+$warning-color: var(--warning-color, #ff9800);
+$info-color: var(--info-color, #2196F3);
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+// fontFamily: Font stack for the entire application
+// fontSize-small: 12px - Small labels, helper text, secondary info
+// fontSize-medium: 14px - Body text, form labels, table content
+// fontSize-large: 16px - Headings, important content
+$font-family: var(--font-family, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif);
+$font-size-small: var(--font-size-small, 12px);
+$font-size-medium: var(--font-size-medium, 14px);
+$font-size-large: var(--font-size-large, 16px);
+
+// ============================================================================
+// SPACING
+// ============================================================================
+// spacing-small: 8px - Padding in buttons, small gaps
+// spacing-medium: 16px - Standard padding, card spacing
+// spacing-large: 24px - Section spacing, major gaps
+$spacing-small: var(--spacing-small, 8px);
+$spacing-medium: var(--spacing-medium, 16px);
+$spacing-large: var(--spacing-large, 24px);
+
+// ============================================================================
+// USAGE EXAMPLES IN COMPONENTS
+// ============================================================================
+// Button: background: $primary-color, color: white
+// Card: background: $background-color, border: 1px solid $border-color
+// Text: color: $text-color, font-family: $font-family
+// Input: border-color: $border-color, border-radius: $border-radius
+// Success Alert: background: $success-color, color: white
+// Error Alert: background: $error-color, color: white
+
+// ============================================================================
+// DERIVABLE COLORS (computed from base colors)
+// ============================================================================
+// These would be lighter/darker versions for hover states, disabled states, etc.
+// In the current implementation, they're defined separately but could be
+// calculated programmatically in a future enhancement
+
+$primary-light: rgba($primary-color, 0.1);
+$primary-dark: rgba($primary-color, 0.8);
+$success-light: rgba($success-color, 0.1);
+$error-light: rgba($error-color, 0.1);
+$warning-light: rgba($warning-color, 0.1);
+$info-light: rgba($info-color, 0.1);
+
+// ============================================================================
+// MIXINS FOR COMMON PATTERNS
+// ============================================================================
+
+// Button Styling Mixin
+@mixin button-style($bg-color: $primary-color, $text-color: white) {
+  background-color: $bg-color;
+  color: $text-color;
+  border-radius: $border-radius;
+  padding: $spacing-small $spacing-medium;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Card Styling Mixin
+@mixin card-style {
+  background-color: $background-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $spacing-medium;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Text Styling Mixin
+@mixin text-style($size: $font-size-medium) {
+  font-family: $font-family;
+  font-size: $size;
+  color: $text-color;
+}
+
+// Alert Box Mixin
+@mixin alert-style($bg-color, $text-color: white) {
+  background-color: rgba($bg-color, 0.1);
+  border-left: 4px solid $bg-color;
+  color: $bg-color;
+  padding: $spacing-medium;
+  border-radius: $border-radius;
+  font-size: $font-size-medium;
+}

@@ -1,13 +1,15 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './core/context/AuthContext';
+import { ThemeProvider } from './core/theme';
 import { ProtectedRoute } from './core/components/ProtectedRoute';
 import { useAppShortcuts } from './core/hooks/useAppShortcuts';
 import { Dashboard } from './core/Dashboard';
 import { UserManagementComponent } from './features/users/UserManagement';
 import { TranslationManagement } from './features/settings/TranslationManagement';
 import { KeyboardShortcutManagement } from './features/settings/KeyboardShortcutManagement';
-import { Login } from './features/auth/Login';
+import { ThemeBuilder } from './core/theme';
+import Login from './features/auth/Login';
 
 function AppContent() {
   // Initialize app-wide keyboard shortcuts
@@ -48,17 +50,27 @@ function AppContent() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/theme"
+        element={
+          <ProtectedRoute>
+            <ThemeBuilder />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
