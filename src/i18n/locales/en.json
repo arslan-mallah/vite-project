@@ -72,6 +72,8 @@
     "signIn": "Sign In",
     "signingIn": "Signing in...",
     "clear": "Clear",
+      "firstBranch": "First Branch",
+      "secondBranch": "Second Branch",
     "demoCredentials": "Demo Credentials",
     "loginErrorEmpty": "Please enter both username and password",
     "loginFailed": "Login failed",

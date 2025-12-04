@@ -57,6 +57,8 @@
     "signIn": "تسجيل دخول",
     "signingIn": "جارٍ تسجيل الدخول...",
     "clear": "مسح",
+      "firstBranch": "الفرع الأول",
+      "secondBranch": "الفرع الثاني",
     "demoCredentials": "بيانات اعتماد التجربة",
     "loginErrorEmpty": "يرجى إدخال اسم الدخول وكلمة المرور",
     "loginFailed": "فشل تسجيل الدخول",

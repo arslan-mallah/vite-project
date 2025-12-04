@@ -1,5 +1,7 @@
 // import './App.css';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthProvider } from './core/context/AuthContext';
 import { ThemeProvider } from './core/theme';
 import { ProtectedRoute } from './core/components/ProtectedRoute';
@@ -11,9 +13,30 @@ import { KeyboardShortcutManagement } from './features/settings/KeyboardShortcut
 import { ThemeBuilder } from './core/theme';
 import Login from './features/auth/Login';
 
+
 function AppContent() {
   // Initialize app-wide keyboard shortcuts
   useAppShortcuts();
+
+  // Sync document direction based on current i18n language and listen for changes
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    const setDir = (lang: string) => {
+      const dir = lang && lang.split('-')[0] === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = dir;
+      document.documentElement.lang = lang || 'en';
+    };
+
+    // set on mount
+    setDir(i18n.language || 'en');
+
+    // listen for language changes
+    const handle = (lng: string) => setDir(lng);
+    i18n.on && i18n.on('languageChanged', handle);
+    return () => {
+      i18n.off && i18n.off('languageChanged', handle);
+    };
+  }, [i18n]);
 
   return (
     <Routes>

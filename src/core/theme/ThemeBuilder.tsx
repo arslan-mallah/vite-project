@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from './ThemeContext';
 import { themePresets } from './types';
@@ -11,10 +11,9 @@ import { PageWrapper } from '../components/PageWrapper';
  */
 export const ThemeBuilder: React.FC = () => {
   const { t } = useTranslation();
-  const { theme, setTheme, importTheme, currentThemeName } = useTheme();
+  const { theme, setTheme, currentThemeName } = useTheme();
   const [copyStatus, setCopyStatus] = useState<string>('');
-  const [importJson, setImportJson] = useState<string>('');
-  const [showImport, setShowImport] = useState<boolean>(false);
+  const initialThemeRef = useRef(theme);
 
   /**
    * handleColorChange: Updates a specific color in the theme
@@ -26,37 +25,35 @@ export const ThemeBuilder: React.FC = () => {
     });
   }, [theme, setTheme]);
 
-  /**
-   * handleCopyTheme: Serializes the current theme object to JSON and copies to clipboard
-   */
-  const handleCopyTheme = useCallback(async () => {
-    try {
-      const themeJson = JSON.stringify(theme, null, 2);
-      await navigator.clipboard.writeText(themeJson);
-      setCopyStatus('✅ Copied!');
-    } catch (err) {
-      setCopyStatus('❌ Failed to copy.');
-      console.error('Copy failed:', err);
-    } finally {
-      setTimeout(() => setCopyStatus(''), 2000);
-    }
-  }, [theme]);
+  // Keep a couple of small user-friendly helpers: reset and randomize
+  const handleReset = useCallback(() => {
+    setTheme(initialThemeRef.current);
+    setCopyStatus('✨ Reset to original theme');
+    setTimeout(() => setCopyStatus(''), 2000);
+  }, [setTheme]);
 
-  /**
-   * handleImport: Imports theme from JSON string
-   */
-  const handleImport = useCallback(() => {
-    if (importJson.trim()) {
-      if (importTheme(importJson)) {
-        setCopyStatus('✨ Theme Imported!');
-        setImportJson('');
-        setShowImport(false);
-      } else {
-        setCopyStatus('⚠️ Invalid JSON/Theme.');
-      }
-      setTimeout(() => setCopyStatus(''), 2000);
-    }
-  }, [importJson, importTheme]);
+  const handleRandomize = useCallback(() => {
+    const randHex = () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+    const keys = [
+      'primaryColor',
+      'secondaryColor',
+      'backgroundColor',
+      'textColor',
+      'borderColor',
+      'successColor',
+      'errorColor',
+      'warningColor',
+      'infoColor',
+    ] as Array<keyof Omit<Theme, 'fontSize' | 'spacing' | 'name'>>;
+
+    const newTheme = { ...theme } as any;
+    keys.forEach((k) => {
+      newTheme[k] = randHex();
+    });
+    setTheme(newTheme);
+    setCopyStatus('✨ Randomized colors');
+    setTimeout(() => setCopyStatus(''), 2000);
+  }, [theme, setTheme]);
 
   /**
    * handleSelectPreset: Apply a preset theme
@@ -167,20 +164,31 @@ export const ThemeBuilder: React.FC = () => {
 
       <hr className="border-slate-300 dark:border-slate-700 my-8" />
 
-      {/* Export Section */}
+      {/* Theme Controls */}
       <div className="mb-12">
         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
-          {t('theme.shareExport')}
+          {t('theme.controls', 'Theme Controls')}
         </h3>
-        
+
+        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
+          {t('theme.controlsDescription', 'Edit colors above — changes apply instantly. Use the buttons to reset or experiment.')}
+        </p>
+
         <div className="flex items-center gap-4">
           <button
-            onClick={handleCopyTheme}
-            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md"
+            onClick={handleReset}
+            className="px-6 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md"
           >
-            📋 {t('theme.copyThemeJson')}
+            🔄 {t('theme.reset', 'Reset')}
           </button>
-          
+
+          <button
+            onClick={handleRandomize}
+            className="px-6 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md"
+          >
+            🎲 {t('theme.randomize', 'Randomize Colors')}
+          </button>
+
           {copyStatus && (
             <span className={`text-sm font-semibold ${
               copyStatus.includes('✅') || copyStatus.includes('✨')
@@ -191,41 +199,6 @@ export const ThemeBuilder: React.FC = () => {
             </span>
           )}
         </div>
-      </div>
-
-      <hr className="border-slate-300 dark:border-slate-700 my-8" />
-
-      {/* Import Theme Section */}
-      <div className="mb-12">
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
-          {t('theme.import')}
-        </h3>
-        
-        <button
-          onClick={() => setShowImport(!showImport)}
-          className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md mb-4"
-        >
-          {showImport ? '🔽' : '▶'} {t(showImport ? 'theme.hideImport' : 'theme.showImport')}
-        </button>
-
-        {showImport && (
-          <div className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 p-6 rounded-lg">
-            <textarea
-              rows={8}
-              value={importJson}
-              onChange={(e) => setImportJson(e.target.value)}
-              placeholder={t('theme.pasteThemeJson', 'Paste theme JSON here')}
-              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 resize-none"
-            />
-            
-            <button
-              onClick={handleImport}
-              className="w-full px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-md"
-            >
-              ✨ {t('theme.applyImported')}
-            </button>
-          </div>
-        )}
       </div>
 
       <hr className="border-slate-300 dark:border-slate-700 my-8" />

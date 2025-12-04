@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../core/context/AuthContext';
+import ecarlogo from '../auth/aasets/ecar-logo.png'
+import safiplogo from '../auth/aasets/safip.png';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
@@ -33,7 +35,6 @@ export default function Login() {
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
-    document.documentElement.lang = lang;
   };
 
   useEffect(() => {
@@ -52,52 +53,32 @@ export default function Login() {
   }, [i18n]);
 
   return (
-    <div className="h-screen flex overflow-x-hidden bg-white">
+    <div className="min-h-screen flex flex-col md:flex-row overflow-x-hidden bg-white" dir={isArabic ? 'rtl' : 'ltr'}>
       {/* LEFT SIDE - WHITE BACKGROUND */}
-      <div className="relative w-1/2 bg-white flex flex-col items-center justify-center px-12 py-12 overflow-y-auto">
-        {/* Language Selector - Top Left on White Side */}
-        <div className="absolute top-6 left-6">
-          <div className="flex gap-0 bg-white rounded overflow-hidden shadow-lg">
-            <button
-              onClick={() => changeLanguage('en')}
-              className={`px-6 py-2 font-bold text-sm transition ${
-                i18n.language === 'en' ? 'bg-sky-400 text-white' : 'bg-white text-gray-800 hover:bg-gray-50'
-              }`}
-            >
-              English
-            </button>
-            <button
-              onClick={() => changeLanguage('ar')}
-              className={`px-6 py-2 font-bold text-sm border-l transition ${
-                i18n.language === 'ar' ? 'bg-sky-400 text-white' : 'bg-white text-gray-800 hover:bg-gray-50'
-              }`}
-            >
-              عربي
-            </button>
-          </div>
-        </div>
+      <div className="relative w-full md:w-1/2 bg-white flex flex-col items-center justify-center px-6 md:px-12 py-8 md:py-12 overflow-y-auto">
         
-        {/* First Logo - ACEP */}
-        <div className="mb-16 text-center">
-          <div className="inline-flex items-center justify-center h-20 w-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mb-4 shadow-lg">
-            <span className="text-3xl">🏛️</span>
+        
+        {/* First Logo */}
+        <div className="mb-6 text-center">
+          <div className="inline-flex items-center justify-center h-24 w-24 sm:h-32 sm:w-32 md:h-60 md:w-60">
+            <img src={ecarlogo} alt={isArabic ? 'شعار ECAR' : 'ECAR Logo'} className="h-16 w-16 sm:h-24 sm:w-24 md:h-52 md:w-52 object-contain" />
           </div>
         </div>
 
-        {/* Second Logo - Shield */}
-        <div className="mb-16 text-center">
-          <div className="inline-flex items-center justify-center h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full mb-4 shadow-lg">
-            <span className="text-3xl">🛡️</span>
+        {/* Second Logo */}
+        <div className="mb-6 text-center">
+          <div className="inline-flex items-center justify-center h-24 w-24 sm:h-32 sm:w-32 md:h-60 md:w-60">
+            <img src={safiplogo} alt={isArabic ? 'شعار SAFIP' : 'SAFIP Logo'} className="h-16 w-16 sm:h-24 sm:w-24 md:h-52 md:w-52 object-contain" />
           </div>
         </div>
 
         {/* Translatable Description Text */}
-        <div className="w-3/4 text-center mb-16">
+        <div className="w-11/12 md:w-3/4 text-center mb-12">
           {/* <p className="text-sm text-gray-700 leading-relaxed">
             {t('auth.companyDescription', 'This system is licensed and developed for managing intellectual property resources.')}
           </p> */}
             <p 
-          className={`text-center mb-0 font-bold text-sm ${
+          className={`text-center mb-0 font-bold text-sm sm:text-sm md:text-base ${
     isArabic 
       ? 'text-right' 
       : 'text-left'
@@ -128,10 +109,10 @@ export default function Login() {
       </div>
 
       {/* RIGHT SIDE - BLUE BACKGROUND */}
-      <div className="w-1/2 bg-gradient-to-b from-sky-300 to-sky-400 flex flex-col items-center justify-center px-12 py-12 relative overflow-y-auto">
+      <div className="w-full md:w-1/2 bg-gradient-to-b from-sky-300 to-sky-400 flex flex-col items-center justify-center px-6 md:px-12 py-8 md:py-12 relative overflow-y-auto">
 
         {/* LOGIN FORM BOX */}
-        <div className="w-1/2 bg-black bg-opacity-95 rounded-xl shadow-2xl p-8">
+        <div className="w-full sm:w-11/12 md:w-3/4 lg:w-1/2 bg-black bg-opacity-95 rounded-xl shadow-2xl p-4 sm:p-6 md:p-8 mx-auto">
           {/* Form Title */}
           <h1 className="text-white text-lg font-bold text-center mb-8">{t('auth.login', 'Login')}</h1>
 
@@ -172,6 +153,22 @@ export default function Login() {
               />
             </div>
 
+            {/* Branch Selection Buttons */}
+            <div className="flex gap-2 rounded overflow-hidden shadow-lg">
+                <button
+                  type="button"
+                  className="flex-1 px-4 py-2 bg-sky-400 text-white font-bold text-sm transition hover:bg-sky-500"
+                >
+                  {t('auth.firstBranch', 'First Branch')}
+                </button>
+                <button
+                  type="button"
+                  className="flex-1 px-4 py-2 bg-sky-400 text-white font-bold text-sm  transition hover:bg-sky-500"
+                >
+                  {t('auth.secondBranch', 'Second Branch')}
+                </button>
+            </div>
+
             {/* Year Select */}
             <div>
               <label htmlFor="year" className="sr-only">Year</label>
@@ -187,6 +184,28 @@ export default function Login() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Change Language Buttons */}
+            <div className="flex flex-col sm:flex-row gap-2 rounded overflow-hidden shadow-lg">
+              <button
+                type="button"
+                onClick={() => changeLanguage('en')}
+                className={`flex-1 px-4 py-2 font-bold text-sm transition ${
+                  i18n.language === 'en' ? 'bg-sky-400 text-white' : 'bg-white text-gray-800 hover:bg-gray-50'
+                }`}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                onClick={() => changeLanguage('ar')}
+                className={`flex-1 px-4 py-2 font-bold text-sm border-l transition ${
+                  i18n.language === 'ar' ? 'bg-sky-400 text-white' : 'bg-white text-gray-800 hover:bg-gray-50'
+                }`}
+              >
+                عربي
+              </button>
             </div>
 
             {/* Error Message */}
