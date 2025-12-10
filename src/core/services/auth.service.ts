@@ -1,3 +1,5 @@
+import { httpService } from '../http/abi-http.service';
+
 /**
  * Authentication Service
  * Manages user authentication, tokens, and session persistence
@@ -6,7 +8,7 @@
 export interface User {
   id: string;
   username: string;
-  email: string;
+  name: string;
   avatar?: string;
 }
 
@@ -16,72 +18,54 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
-const STORAGE_KEY = 'auth_token';
+const STORAGE_KEY = 'authToken';
 const USER_STORAGE_KEY = 'auth_user';
+
+export interface LoginResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  user: {
+    id: string;
+    name: string;
+  };
+}
 
 class AuthService {
   private listeners: Set<() => void> = new Set();
 
   /**
-   * Mock user database
+   * Login user with username and password via API
    */
-  private mockUsers: Record<string, { password: string; user: User }> = {
-    demo: {
-      password: 'demo',
-      user: {
-        id: '1',
-        username: 'demo',
-        email: 'demo@example.com',
+  public async login(username: string, password: string): Promise<{ success: boolean; error?: string; user?: User }> {
+    try {
+      const response = await httpService.post<LoginResponse>('/auth/login-tenant', { username, password });
+
+      const { access_token, user } = response;
+
+      // Store token and user
+      localStorage.setItem(STORAGE_KEY, access_token);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({
+        id: user.id,
+        username: user.name,
+        name: user.name,
         avatar: '👤',
-      },
-    },
-    admin: {
-      password: 'admin123',
-      user: {
-        id: '2',
-        username: 'admin',
-        email: 'admin@example.com',
-        avatar: '👨‍💼',
-      },
-    },
-    user: {
-      password: 'user123',
-      user: {
-        id: '3',
-        username: 'user',
-        email: 'user@example.com',
-        avatar: '👨‍💻',
-      },
-    },
-  };
+      }));
 
-  /**
-   * Login user with username and password
-   */
-  public login(username: string, password: string): { success: boolean; error?: string; user?: User } {
-    // Simulate network delay
-    const mockUser = this.mockUsers[username.toLowerCase()];
+      // Notify listeners
+      this.notifyListeners();
 
-    if (!mockUser) {
-      return { success: false, error: 'Invalid username or password' };
+      return { success: true, user: {
+        id: user.id,
+        username: user.name,
+        name: user.name,
+        avatar: '👤',
+      }};
+    } catch (error: unknown) {
+      console.error('Login error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Login failed';
+      return { success: false, error: errorMessage };
     }
-
-    if (mockUser.password !== password) {
-      return { success: false, error: 'Invalid username or password' };
-    }
-
-    // Generate mock token
-    const token = `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const user = mockUser.user;
-
-    // Store in localStorage
-    localStorage.setItem(STORAGE_KEY, token);
-    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-
-    // Notify listeners
-    this.notifyListeners();
-
-    return { success: true, user };
   }
 
   /**

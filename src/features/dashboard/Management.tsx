@@ -1,22 +1,6 @@
-import { useState } from "react";
 import Customers from "./Customers";
 
-export default function Management() {
-  const [activeTab, setActiveTab] = useState("management");
-  // const [activeTab, setActiveTab] = useState("customers");
-
-  const tabs = [
-    "Website",
-    "Management",
-    "Customers",
-    "Works",
-    "Sales",
-    "Inventory",
-    "HR",
-    "Reports",
-    "Training",
-  ];
-
+export default function Management({ activeTab }: { activeTab: string }) {
   const sections = [
     {
       title: "VAT",
@@ -82,23 +66,6 @@ export default function Management() {
   return (
     <div className="w-full min-h-screen bg-white p-4">
       <div className="ml-5 flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab.toLowerCase())}
-            className={`border-2 border-zinc-500 px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300
-              ${activeTab === tab.toLowerCase()
-                ? "bg-black text-white shadow-lg border border-black"
-                : "bg-white text-black shadow hover:bg-gray-100 border border-gray-200"
-              }`}
-            style={{
-              boxShadow: "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
-            }}
-          >
-            {tab}
-          </button>
-        ))}
-
         <button className="border-2 border-zinc-500 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-lg transition-all duration-300">
           Logout
         </button>

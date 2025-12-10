@@ -56,10 +56,10 @@ export const userService = new UserService();
  */
 
 interface Company {
-  id: number;
+  id: string;
   name: string;
-  email: string;
-  phone: string;
+  cr_number?: string;
+  cr_issue_date?: string;
 }
 
 export class CompanyService {
@@ -69,7 +69,7 @@ export class CompanyService {
     return httpService.get<Company[]>(this.endpoint);
   }
 
-  async getCompanyById(id: number): Promise<Company> {
+  async getCompanyById(id: string): Promise<Company> {
     return httpService.get<Company>(`${this.endpoint}/${id}`);
   }
 
@@ -77,13 +77,52 @@ export class CompanyService {
     return httpService.post<Company>(this.endpoint, payload);
   }
 
-  async updateCompany(id: number, payload: Partial<Company>): Promise<Company> {
+  async updateCompany(id: string, payload: Partial<Company>): Promise<Company> {
     return httpService.put<Company>(`${this.endpoint}/${id}`, payload);
   }
 
-  async deleteCompany(id: number): Promise<void> {
+  async deleteCompany(id: string): Promise<void> {
     return httpService.delete<void>(`${this.endpoint}/${id}`);
   }
 }
 
 export const companyService = new CompanyService();
+
+/**
+ * Example: Branch Service using HTTP Service
+ */
+
+interface Branch {
+  id: string;
+  company_id: string;
+  name: string;
+  code: string;
+  city?: string;
+  is_main: boolean;
+}
+
+export class BranchService {
+  private endpoint = '/branches';
+
+  async getAllBranches(): Promise<Branch[]> {
+    return httpService.get<Branch[]>(this.endpoint);
+  }
+
+  async getBranchById(id: string): Promise<Branch> {
+    return httpService.get<Branch>(`${this.endpoint}/${id}`);
+  }
+
+  async createBranch(payload: Omit<Branch, 'id'>): Promise<Branch> {
+    return httpService.post<Branch>(this.endpoint, payload);
+  }
+
+  async updateBranch(id: string, payload: Partial<Branch>): Promise<Branch> {
+    return httpService.put<Branch>(`${this.endpoint}/${id}`, payload);
+  }
+
+  async deleteBranch(id: string): Promise<void> {
+    return httpService.delete<void>(`${this.endpoint}/${id}`);
+  }
+}
+
+export const branchService = new BranchService();

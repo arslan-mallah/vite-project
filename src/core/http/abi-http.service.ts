@@ -11,6 +11,7 @@ export class AbiHttpService {
   private getHeaders() {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
+      'x-tenant-domain': 'localhost', // or some default
     };
     const token = localStorage.getItem('authToken');
     if (token) {

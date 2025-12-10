@@ -28,10 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (username: string, password: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    const result = authService.login(username, password);
+    const result = await authService.login(username, password);
     setIsLoading(false);
 
     return result;
