@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -9,10 +9,11 @@ const apiClient = axios.create({
 
 // Add request interceptor to include auth token
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem('authToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  config.headers['x-tenant-domain'] = import.meta.env.VITE_TENANT_DOMAIN || 'localhost';
   return config;
 });
 

@@ -27,7 +27,7 @@ export default function Login() {
 
     const result = await login(username, password);
     if (result.success) {
-      navigate('/');
+      navigate('/dashboard');
     } else {
       setError(result.error || t('auth.loginFailed', 'Login failed'));
     }

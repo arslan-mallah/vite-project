@@ -12,8 +12,6 @@ import { TranslationManagement } from './features/settings/TranslationManagement
 import { KeyboardShortcutManagement } from './features/settings/KeyboardShortcutManagement';
 import { ThemeBuilder } from './core/theme';
 import Login from './features/auth/Login';
-import { MenuList } from './features/menu/MenuList';
-import { MenuManagement } from './features/menu/MenuManagement';
 import { Inventory } from './features/inventory/Inventory';
 import { CompanyManagement } from './features/companies/CompanyManagement';
 import { BranchManagement } from './features/branches/BranchManagement';
@@ -48,7 +46,11 @@ function AppContent() {
       <Route path="/login" element={<Login />} />
       <Route
         path="/"
-        element={<MenuList />}
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/dashboard"
@@ -97,14 +99,6 @@ function AppContent() {
             <Inventory />
           </ProtectedRoute>
         }
-      />
-      <Route
-        path="/menus"
-        element={<MenuList />}
-      />
-      <Route
-        path="/menu-management"
-        element={<MenuManagement />}
       />
       <Route
         path="/companies"

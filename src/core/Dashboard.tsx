@@ -1,14 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from './context/AuthContext';
 import { useState } from 'react';
 import Management from '../features/dashboard/Management';
+import Customers from '../features/dashboard/Customers';
 
 export function Dashboard() {
-  const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
-  const [showMenu, setShowMenu] = useState(false);
   const [activeTab, setActiveTab] = useState("management");
 
   const tabs = [
@@ -48,12 +46,12 @@ export function Dashboard() {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-2 overflow-x-auto flex-1 mx-4">
+            <div className="flex gap-1 overflow-x-auto flex-1 mx-1">
               {tabs.map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab.toLowerCase())}
-                  className={`border-2 border-zinc-500 px-4 py-2 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300
+                  className={`border-2 border-zinc-500 px-1 py-1 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 w-24 h-9
                     ${activeTab === tab.toLowerCase()
                       ? "bg-black text-white shadow-lg border border-black"
                       : "bg-white text-black shadow hover:bg-gray-100 border border-gray-200"
@@ -69,7 +67,7 @@ export function Dashboard() {
 
             {/* User Menu */}
             <div className="flex items-center gap-4">
-              {user && (
+              {/* {user && (
                 <div className="hidden sm:flex items-center gap-3 pr-4 border-r border-slate-200 dark:border-slate-700">
                   <div className="text-2xl">{user.avatar}</div>
                   <div className="text-left">
@@ -77,29 +75,23 @@ export function Dashboard() {
                     <p className="text-xs text-slate-500 dark:text-slate-400">{user.name}</p>
                   </div>
                 </div>
-              )}
+              )} */}
 
-              <div className="relative">
-                <button
-                  onClick={() => setShowMenu(!showMenu)}
-                  className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition"
-                  aria-haspopup="true"
-                  aria-expanded={showMenu}
-                >
-                  <span className="text-xl">⋯</span>
-                </button>
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center justify-center w-24 h-9 rounded-lg bg-green-600 hover:bg-green-700 text-white transition"
+                title="Refresh"
+              >
+                <span className="text-sm font-semibold">Refresh</span>
+              </button>
 
-                {showMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-50">
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium transition flex items-center gap-2"
-                    >
-                      <span>🚪</span> {t('dashboard.logout')}
-                    </button>
-                  </div>
-                )}
-              </div>
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center justify-center w-24 h-9 rounded-lg bg-red-600 hover:bg-red-700 text-white transition"
+                title="Logout"
+              >
+                <span className="text-sm font-semibold">Logout</span>
+              </button>
             </div>
           </div>
         </div>
@@ -107,7 +99,13 @@ export function Dashboard() {
 
       {/* Main Content */}
 
-       <Management activeTab={activeTab} />
+      {activeTab === 'management' && <Management />}
+      {activeTab === 'customers' && <Customers />}
+      {activeTab !== 'management' && activeTab !== 'customers' && (
+        <div className="w-full min-h-screen bg-white p-4 flex justify-center items-center text-gray-400 text-lg font-semibold">
+          No Data Available for {activeTab}
+        </div>
+      )}
 
       <main className="w-full px-4 sm:px-6 lg:px-8 py-12">
         {/* Welcome Section */}

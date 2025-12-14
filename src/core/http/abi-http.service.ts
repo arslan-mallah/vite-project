@@ -11,7 +11,7 @@ export class AbiHttpService {
   private getHeaders() {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      'x-tenant-domain': 'localhost', // or some default
+      'x-tenant-domain': import.meta.env.VITE_TENANT_DOMAIN || 'app.carerp.io',
     };
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -66,5 +66,5 @@ export class AbiHttpService {
 
 // Export singleton instance
 export const httpService = new AbiHttpService(
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+  '/api'
 );

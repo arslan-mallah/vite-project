@@ -60,6 +60,8 @@ interface Company {
   name: string;
   cr_number?: string;
   cr_issue_date?: string;
+  email?: string;
+  phone?: string;
 }
 
 export class CompanyService {

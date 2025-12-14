@@ -96,13 +96,13 @@ export async function testCompanyService() {
     console.log('Created Company:', newCompany);
 
     // Update company
-    const updatedCompany = await companyService.updateCompany(1, {
+    const updatedCompany = await companyService.updateCompany('1', {
       name: 'Tech Corp Updated',
     });
     console.log('Updated Company:', updatedCompany);
 
     // Delete company
-    await companyService.deleteCompany(1);
+    await companyService.deleteCompany('1');
     console.log('Company deleted successfully');
   } catch (error) {
     console.error('Company Service Error:', error);
