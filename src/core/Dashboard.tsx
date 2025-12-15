@@ -78,12 +78,14 @@ export function Dashboard() {
               )} */}
 
               <button
-                onClick={() => window.location.reload()}
+                type="button"
+                // onClick={() => window.location.reload()}
                 className="inline-flex items-center justify-center w-24 h-9 rounded-lg bg-green-600 hover:bg-green-700 text-white transition"
                 title="Refresh"
               >
                 <span className="text-sm font-semibold">Refresh</span>
               </button>
+
 
               <button
                 onClick={handleLogout}

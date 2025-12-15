@@ -66,5 +66,5 @@ export class AbiHttpService {
 
 // Export singleton instance
 export const httpService = new AbiHttpService(
-  '/api'
+  import.meta.env.VITE_API_BASE_URL || '/api'
 );

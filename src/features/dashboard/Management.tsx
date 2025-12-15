@@ -1,45 +1,6 @@
 import { useState, useEffect } from 'react';
 import { httpService } from '../../core/http/abi-http.service';
 
-const getDummyData = () => [
-  {
-    title: "VAT",
-    items: [
-      { label: "Sales VAT", value: 15000, type: "Total" }
-    ],
-  },
-  {
-    title: "Cashflow",
-    items: [
-      { label: "Income", value: 25000, type: "Total" }
-    ],
-  },
-  {
-    title: "Purchase",
-    items: [
-      { label: "Parts", value: 5000, type: "Total" }
-    ],
-  },
-  {
-    title: "Expenses",
-    items: [
-      { label: "Salaries", value: 10000, type: "Total" }
-    ],
-  },
-  {
-    title: "Maintenance Cards",
-    items: [
-      { label: "Active", value: 15, type: "Count" }
-    ],
-  },
-  {
-    title: "Sales",
-    items: [
-      { label: "Total Sales", value: 35000, type: "Total" }
-    ],
-  },
-];
-
 export default function Management() {
   const [startDate, setStartDate] = useState({
     day: '1',
@@ -53,14 +14,14 @@ export default function Management() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sections, setSections] = useState<any[]>(getDummyData());
+  const [sections, setSections] = useState<any[]>([]);
 
   const fetchManagementData = async () => {
     try {
       setLoading(true);
       const start = `${startDate.year}-${startDate.month.padStart(2, '0')}-${startDate.day.padStart(2, '0')}`;
       const end = `${endDate.year}-${endDate.month.padStart(2, '0')}-${endDate.day.padStart(2, '0')}`;
-      const result: any = await httpService.get(`/menus?start_date=${start}&end_date=${end}`);
+      const result: any = await httpService.get(`/dashboard/management?start_date=${start}&end_date=${end}`);
       if (result.success) {
         const data = result.data;
         const formattedSections = [
@@ -68,9 +29,6 @@ export default function Management() {
             title: "VAT",
             items: [
               { label: "Sales VAT", value: data.vat.sales_vat, type: "Total" },
-              { label: "Expenses", value: data.vat.expenses, type: "Total" },
-              { label: "Purchase", value: data.vat.purchase, type: "Total" },
-              { label: "Tax due", value: data.vat.tax_due, type: "Balance" },
             ],
           },
           {
@@ -96,13 +54,12 @@ export default function Management() {
         ];
         setSections(formattedSections);
       } else {
-        // Show dummy data on failure
-        setSections(getDummyData());
+        setSections([]);
+        setError('Failed to fetch data');
       }
     } catch (err: any) {
       setError(err.message);
-      // Show dummy data on error
-      setSections(getDummyData());
+      setSections([]);
     } finally {
       setLoading(false);
     }
