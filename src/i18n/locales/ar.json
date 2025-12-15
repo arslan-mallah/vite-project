@@ -1,8 +1,6 @@
 ﻿{
-  "dashboard": {
-    "title": "مركز الترجمة",
-    "subtitle": "إدارة الترجمات وإعدادات اللغة"
-  },
+  "welcomeMessage": "مرحبًا بك في صفحة تسجيل الدخول",
+
   "navigation": {
     "languageSettings": "إعدادات اللغة",
     "languageSettingsDesc": "تغيير لغة التطبيق",
@@ -48,6 +46,10 @@
     "moderator": "مراقب"
   },
   "auth": {
+    "user": {
+      "username": "اسم الدخول",
+      "password": "كلمة المرور"
+    },
     "login": "تسجيل الدخول",
     "loginSubtitle": "أدخل بيانات اعتمادك",
     "username": "اسم الدخول",
@@ -72,7 +74,31 @@
     "technicalSupport": "للدعم الفني",
     "contact1": "0112297553",
     "contact2": "0565100268",
-    "version": "SAMCOTEC v ERP - 3.4.01",
+    "version": "SAMCOTEC v ERP - 4.0.01",
     "copyright": "جميع الحقوق محفوظة"
+  },
+  "support": {
+    "technicalSupport": "للدعم الفني",
+    "contact1": "0112297553",
+    "contact2": "0565100268"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "لوحة التحكم الإدارية",
+    "logout": "تسجيل خروج",
+    "welcome": "مرحبًا بك في لوحة التحكم",
+    "explore": "التصفح",
+    "tips": "ملاحظات سريعة",
+    "tipsLanguage": "تغيير اللغة",
+    "tipsTheme": "دورة التصميم",
+    "tipsSubmit": "ارسال سريع",
+    "tips13Languages": "يدعم 13 لغة",
+    "sales_vat": "ضريبة المبيعات",
+    "expenses": "المصروفات",
+    "purchase": "المشتريات",
+    "total_expenses": "إجمالي المصروفات",
+    "tax_due": "الضريبة المستحقة",
+    "VAT": "ضريبة القيمة المضافة"
+
   }
 }

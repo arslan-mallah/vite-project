@@ -91,7 +91,7 @@ const Customers: React.FC = () => {
   const tabs = ['Clients', 'Loyalty Program', 'Quotations', 'Booking', 'Maint. Contract', 'Check Car'];
 
   const [activeTab, setActiveTab] = useState('Clients');
-  const [customers, setCustomers] = useState<Customer[]>(CUSTOMER_DATA);
+  const [customers] = useState<Customer[]>(CUSTOMER_DATA);
 
   const [searchMobile, setSearchMobile] = useState('');
   const [searchCustomerName, setSearchCustomerName] = useState('');
@@ -171,7 +171,7 @@ const Customers: React.FC = () => {
     c.companyName.includes(searchCompanyName)
   );
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
@@ -934,9 +934,9 @@ const Customers: React.FC = () => {
           <tbody>
             {loyaltyPaginatedData
               .map(c => {
-                let tier = 'Bronze';
-                if (c.loyaltyPoints > 1000) tier = 'Gold';
-                else if (c.loyaltyPoints > 500) tier = 'Silver';
+                // let tier = 'Bronze';
+                // if (c.loyaltyPoints > 1000) tier = 'Gold';
+                // else if (c.loyaltyPoints > 500) tier = 'Silver';
 
                 return (
                   <tr key={c.id} className="hover:bg-gray-50">
