@@ -16,6 +16,15 @@ export function KeyboardShortcutManagement() {
     category: 'custom' as 'navigation' | 'editing' | 'global' | 'custom',
   });
 
+  const loadShortcuts = () => {
+    setLoading(true);
+    setTimeout(() => {
+      const allShortcuts = keyboardShortcutService.getAll();
+      setShortcuts(allShortcuts);
+      setLoading(false);
+    }, 500);
+  };
+
   useEffect(() => {
     // Initialize keyboard shortcut service
     keyboardShortcutService.init();
@@ -27,15 +36,6 @@ export function KeyboardShortcutManagement() {
       keyboardShortcutService.destroy();
     };
   }, []);
-
-  const loadShortcuts = () => {
-    setLoading(true);
-    setTimeout(() => {
-      const allShortcuts = keyboardShortcutService.getAll();
-      setShortcuts(allShortcuts);
-      setLoading(false);
-    }, 500);
-  };
 
   const handleAddShortcut = () => {
     if (!newShortcut.id || !newShortcut.name || newShortcut.keys.length === 0) {

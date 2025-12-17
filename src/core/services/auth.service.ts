@@ -10,6 +10,8 @@ export interface User {
   username: string;
   name: string;
   avatar?: string;
+  role?: string;
+  permissions?: string[];
 }
 
 export interface AuthState {
@@ -50,6 +52,8 @@ class AuthService {
         username: user.name,
         name: user.name,
         avatar: '👤',
+        role: 'user', // Default role, can be updated from API
+        permissions: [], // Default empty, can be updated from API
       }));
 
       // Notify listeners
@@ -60,6 +64,8 @@ class AuthService {
         username: user.name,
         name: user.name,
         avatar: '👤',
+        role: 'user',
+        permissions: [],
       }};
     } catch (error: unknown) {
       console.error('Login error:', error);

@@ -1,13 +1,28 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { useState } from 'react';
 import Management from '../features/dashboard/Management';
 import Customers from '../features/dashboard/Customers';
 
 export function Dashboard() {
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("management");
+  const location = useLocation();
+
+  const getActiveTab = (pathname: string) => {
+    if (pathname === '/dashboard' || pathname === '/') return 'management';
+    // if (pathname === '/customers') return 'customers';
+    if (pathname.startsWith('/customers')) return 'customers';
+    if (pathname === '/works') return 'works';
+    if (pathname === '/sales') return 'sales';
+    if (pathname === '/inventory') return 'inventory';
+    if (pathname === '/hr') return 'hr';
+    if (pathname === '/reports') return 'reports';
+    if (pathname === '/training') return 'training';
+    if (pathname === '/website') return 'website';
+    return 'management'; // default
+  };
+
+  const activeTab = getActiveTab(location.pathname);
 
   const tabs = [
     "Website",
@@ -20,6 +35,22 @@ export function Dashboard() {
     "Reports",
     "Training",
   ];
+
+  const handleTabClick = (tab: string) => {
+    const routeMap: { [key: string]: string } = {
+      'Management': '/dashboard',
+      'Customers': '/customers',
+      'Works': '/works',
+      'Sales': '/sales',
+      'Inventory': '/inventory',
+      'HR': '/hr',
+      'Reports': '/reports',
+      'Training': '/training',
+      'Website': '/website',
+    };
+    const route = routeMap[tab] || '/dashboard';
+    navigate(route);
+  };
 
   const handleLogout = () => {
     logout();
@@ -50,8 +81,8 @@ export function Dashboard() {
               {tabs.map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => setActiveTab(tab.toLowerCase())}
-                  className={`border-2 border-zinc-500 px-1 py-1 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 w-24 h-9
+                  onClick={() => handleTabClick(tab)}
+                  className={`border-2 border-zinc-500 px-1 py-1 font-semibold text-sm whitespace-nowrap transition-all duration-300 w-24 h-9
                     ${activeTab === tab.toLowerCase()
                       ? "bg-black text-white shadow-lg border border-black"
                       : "bg-white text-black shadow hover:bg-gray-100 border border-gray-200"

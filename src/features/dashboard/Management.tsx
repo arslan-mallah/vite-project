@@ -29,6 +29,9 @@ export default function Management() {
             title: "VAT",
             items: [
               { label: "Sales VAT", value: data.vat.sales_vat, type: "Total" },
+              { label: "Expenses VAT", value: data.vat.expenses, type: "Total" },
+              { label: "Purchase VAT", value: data.vat.purchase, type: "Total" },
+              { label: "Tax Due", value: data.vat.tax_due, type: "Total" },
             ],
           },
           {
@@ -179,49 +182,51 @@ export default function Management() {
       )}
 
       {!loading && !error && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-6 p-4">
-        {sections.map((section) => (
-          <div
-            key={section.title}
-            className="flex flex-col"
-          >
-            {/* Section Title */}
-            <div className="bg-black text-white text-center py-3 font-bold text-lg rounded-2xl mb-4 shadow-md">
-              {section.title}
-            </div>
-
-            {/* Items */}
-            {section.items.map((item: any) => (
-              <div
-                key={item.label}
-                className="border-2 border-black rounded-2xl p-4 mb-4  bg-gray-300 shadow hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between"
-              >
-                <div className="text-center text-m font-bold text-gray-700 mb-2">
-                  {item.label}
-                </div>
-
-                <hr className="my-3 border-gray-600" />
-
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-center text-xl font-bold text-gray-900">
-                    {item.value}
-                  </div>
-                  <div className="text-right text-s font-bold text-gray-500">
-                    :{item.type}
-                  </div>
-                </div>
-
-                <hr className="my-3 border-gray-600" />
-                <div className="flex justify-center">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-200">
-                    View
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-4 p-6">
+  {sections.map((section) => (
+    <div key={section.title} className="flex flex-col">
+      {/* Section Title */}
+      <div className="bg-gray-800 text-white text-center py-2 font-semibold text-lg rounded-lg mb-3 shadow-md">
+        {section.title}
       </div>
+
+      {/* Items */}
+      {section.items.map((item: any) => (
+        <div
+          key={item.label}
+          className="border border-gray-200 rounded-lg p-4 mb-3 bg-gray-100 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 flex flex-col justify-between"
+        >
+          {/* Item Label */}
+          <div className="text-center text-base font-semibold text-gray-800 mb-2">
+            {item.label}
+          </div>
+
+          <hr className="my-2 border-gray-200" />
+
+          {/* Value & Type */}
+          <div className="flex justify-between items-center mb-2">
+            <div className="text-center text-xl font-bold text-gray-900">
+              {item.value}
+            </div>
+            <div className="text-right text-sm font-medium text-gray-500">
+              {item.type}
+            </div>
+          </div>
+
+          <hr className="my-2 border-gray-200" />
+
+          {/* Button */}
+          <div className="flex justify-center">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md transition-all duration-200 w-24 h-9">
+              View
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
       )}
     </div>
   );

@@ -57,7 +57,7 @@ export default function Login() {
 
   return (
     <div className="min-h-sceen flex flex-col-reverse md:flex-row bg-white" dir={isArabic ? "rtl" : "ltr"}>
-      <div className="w-full min-h-screen md:w-1/2 bg-white justify-center gap:2 flex flex-col items-center justify-center px-6 md:px-12 py-8 md:py-12 overflow-y-auto">
+      <div className="w-full min-h-screen md:w-1/2 bg-white gap-2 flex flex-col items-center justify-center px-6 md:px-12 py-8 md:py-12 overflow-y-auto">
         {/* First Logo */}
         <div className="mb-2 text-center">
           <div className="inline-flex items-center justify-center">

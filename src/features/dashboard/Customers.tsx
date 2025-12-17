@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { httpService } from '../../core/http/abi-http.service';
+
 
 /* =======================
    Types
 ======================= */
 interface Customer {
-  id: number;
+  id: string | number;
   accountId: number;
   customerType: 'Individual' | 'Comp. client' | 'Government';
   clientSource: string;
@@ -18,54 +20,6 @@ interface Customer {
   maintContracts: number;
   createdAt?: string; // Add createdAt for date filtering
 }
-
-/* =======================
-   Dummy Data
-======================= */
-const CUSTOMER_DATA: Customer[] = [
-  {
-    id: 1,
-    accountId: 101,
-    customerType: 'Individual',
-    clientSource: 'Website',
-    mobile: '1234567890',
-    customerName: 'John Doe',
-    companyName: '',
-    quotations: 5,
-    loyaltyPoints: 150,
-    calendarEvents: 2,
-    maintContracts: 1,
-    createdAt: '2025-01-01',
-  },
-  {
-    id: 2,
-    accountId: 102,
-    customerType: 'Comp. client',
-    clientSource: 'Referral',
-    mobile: '0987654321',
-    customerName: 'Jane Smith',
-    companyName: 'ABC Corp',
-    quotations: 10,
-    loyaltyPoints: 750,
-    calendarEvents: 5,
-    maintContracts: 3,
-    createdAt: '2025-06-15',
-  },
-  {
-    id: 3,
-    accountId: 103,
-    customerType: 'Government',
-    clientSource: 'Direct',
-    mobile: '1122334455',
-    customerName: 'Bob Johnson',
-    companyName: 'City Hall',
-    quotations: 8,
-    loyaltyPoints: 1200,
-    calendarEvents: 10,
-    maintContracts: 5,
-    createdAt: '2025-03-20',
-  },
-];
 
 /* =======================
    Badge
@@ -84,14 +38,26 @@ const CustomerTypeBadge: React.FC<{ type: Customer['customerType'] }> = ({ type 
   );
 };
 
+const tabToParam: Record<string, string> = {
+  'Clients': 'clients',
+  'Loyalty Program': 'loyalty',
+  'Quotations': 'quotations',
+  'Booking': 'booking',
+  'Maint. Contract': 'maint-contract',
+  'Check Car': 'check-car',
+};
+
 /* =======================
    Main Component
 ======================= */
 const Customers: React.FC = () => {
   const tabs = ['Clients', 'Loyalty Program', 'Quotations', 'Booking', 'Maint. Contract', 'Check Car'];
 
+  const navigate = useNavigate();
+  const { tab: paramTab } = useParams<{ tab?: string }>();
+
   const [activeTab, setActiveTab] = useState('Clients');
-  const [customers] = useState<Customer[]>(CUSTOMER_DATA);
+  const [customers, setCustomers] = useState<Customer[]>([]);
 
   const [searchMobile, setSearchMobile] = useState('');
   const [searchCustomerName, setSearchCustomerName] = useState('');
@@ -147,8 +113,8 @@ const Customers: React.FC = () => {
     month: '12',
     year: '2025'
   });
-  const [quotationsData, setQuotationsData] = useState<Customer[]>(CUSTOMER_DATA);
-  const [loyaltyData, setLoyaltyData] = useState<Customer[]>(CUSTOMER_DATA);
+  const [quotationsData, setQuotationsData] = useState<Customer[]>([]);
+  const [loyaltyData, setLoyaltyData] = useState<Customer[]>([]);
 
   const [bookingData, setBookingData] = useState<Customer[]>([]);
   const [maintContractData, setMaintContractData] = useState<Customer[]>([]);
@@ -162,6 +128,123 @@ const Customers: React.FC = () => {
   const [checkCarPage, setCheckCarPage] = useState(1);
   const itemsPerPage = 10;
 
+  // Add Customer Form State
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newCustomer, setNewCustomer] = useState({
+    account_number: '',
+    type: 'Individual' as Customer['customerType'],
+    client_source: '',
+    mobile: '',
+    customer_name: '',
+    company_name: '',
+    quotations: '',
+    current_balance: '', // This maps to Points/Loyalty Points
+    calendar_events: '',
+    maint_contracts: '',
+    // New fields
+    id_number: '',
+    city: '',
+    vat_number: '',
+    cr_number: '',
+    street_name: '',
+    building_no: '',
+    branch_no: '',
+    district: '',
+    zipcode: '',
+    address: '',
+    entity_name: '',
+    branch_name: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [activeFormTab, setActiveFormTab] = useState<'Individual' | 'Comp. client' | 'Government'>('Individual');
+
+  /* =======================
+     Fetch Customers
+  ======================= */
+  const fetchCustomers = async () => {
+    try {
+      const result: any = await httpService.get('/customers');
+      if (result?.success && Array.isArray(result.data)) {
+        setCustomers(result.data);
+      } else {
+        setCustomers([]);
+      }
+    } catch (err: any) {
+      console.error('Failed to fetch customers:', err);
+      setCustomers([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  useEffect(() => {
+    if (paramTab) {
+      const tab = Object.keys(tabToParam).find(key => tabToParam[key] === paramTab);
+      if (tab) setActiveTab(tab);
+    } else {
+      setActiveTab('Clients');
+    }
+  }, [paramTab]);
+
+  /* =======================
+     Add Customer
+  ======================= */
+  const handleAddCustomer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const customerData = {
+        ...newCustomer,
+        type: activeFormTab, // Set type based on active tab
+        name: newCustomer.customer_name, // Map customer_name to name for API
+        current_balance: newCustomer.current_balance ? parseFloat(newCustomer.current_balance) : 0,
+        quotations: newCustomer.quotations ? parseInt(newCustomer.quotations) : 0,
+        calendar_events: newCustomer.calendar_events ? parseInt(newCustomer.calendar_events) : 0,
+        maint_contracts: newCustomer.maint_contracts ? parseInt(newCustomer.maint_contracts) : 0,
+      };
+      const result: any = await httpService.post('/customers', customerData);
+      if (result?.success) {
+        alert('Customer added successfully!');
+        setShowAddForm(false);
+        setActiveFormTab('Individual'); // Reset to default tab
+        setNewCustomer({
+          account_number: '',
+          type: 'Individual',
+          client_source: '',
+          mobile: '',
+          customer_name: '',
+          company_name: '',
+          quotations: '',
+          current_balance: '',
+          calendar_events: '',
+          maint_contracts: '',
+          id_number: '',
+          city: '',
+          vat_number: '',
+          cr_number: '',
+          street_name: '',
+          building_no: '',
+          branch_no: '',
+          district: '',
+          zipcode: '',
+          address: '',
+          entity_name: '',
+          branch_name: '',
+        });
+        fetchCustomers(); // Refetch customers
+      } else {
+        alert('Failed to add customer');
+      }
+    } catch (err: any) {
+      console.error('Failed to add customer:', err);
+      alert('Failed to add customer');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   /* =======================
      Filter
   ======================= */
@@ -172,7 +255,7 @@ const Customers: React.FC = () => {
   );
 
   // const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
+  
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -331,6 +414,61 @@ const Customers: React.FC = () => {
     else if (activeTab === 'Check Car') setCheckCarPage(1);
   }, [activeTab]);
 
+
+  const Section = ({ title, children }: any) => (
+  <div className="bg-gray-50 border rounded-xl p-6">
+    <h3 className="text-lg font-semibold text-gray-800 mb-4">{title}</h3>
+    {children}
+  </div>
+);
+
+const Grid = ({ children }: any) => (
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{children}</div>
+);
+
+type InputProps = {
+  label: string;
+  value?: any;
+  onChange?: (value: string) => void;
+  type?: string;
+  required?: boolean;
+};
+
+const Input = ({ label, value, onChange, type = 'text', required }: InputProps) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+    </label>
+    <input
+      type={type}
+      required={required}
+      value={value ?? ''}
+      onChange={(e) => onChange?.(e.target.value)}   
+      className="w-full h-11 rounded-lg border border-gray-300 px-4
+      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+    />
+  </div>
+);
+
+type TextareaProps = {
+  label: string;
+  value?: string;
+  onChange?: (value: string) => void;
+};
+
+const Textarea = ({ label, value, onChange }: TextareaProps) => (
+  <div className="md:col-span-2">
+    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <textarea
+      rows={3}
+      value={value ?? ''}
+      onChange={(e) => onChange?.(e.target.value)}   
+      className="w-full rounded-lg border border-gray-300 px-4 py-3
+      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+    />
+  </div>
+);
+
   /* =======================
      Table Content
   ======================= */
@@ -359,7 +497,7 @@ const Customers: React.FC = () => {
           className="border-2 border-zinc-500 px-2 py-1 rounded-lg h-9"
         />
 
-        <button className="bg-blue-600 text-white px-2 py-1 rounded-lg h-9 w-32">
+        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md transition-all duration-200 w-24 h-9">
           Search
         </button>
 
@@ -369,7 +507,7 @@ const Customers: React.FC = () => {
             استيراد اكسل
           </button>
 
-          <button className="bg-blue-600 text-white px-2 py-1 rounded-lg h-9 w-32" onClick={() => alert('Adding new Customer')}>
+          <button className="bg-blue-600 text-white px-2 py-1 rounded-lg h-9 w-32" onClick={() => setShowAddForm(true)}>
             Add Customer
           </button>
         </div>
@@ -419,7 +557,7 @@ const Customers: React.FC = () => {
                 <td className="border">{c.calendarEvents}</td>
                 <td className="border">{c.maintContracts}</td>
                 <td className="border">
-                  <button className="bg-blue-600 text-white px-4 py-1 rounded-lg" onClick={() => alert(`Viewing ${c.customerName}`)}>
+                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md transition-all duration-200 w-24 h-9" onClick={() => alert(`Viewing ${c.customerName}`)}>
                     View
                   </button>
                 </td>
@@ -445,6 +583,177 @@ const Customers: React.FC = () => {
       </div> */}
     </>
   );
+
+  
+
+  /* =======================
+     Add Customer Modal
+  ======================= */
+ const addCustomerModal = showAddForm && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className="bg-white w-full max-w-6xl max-h-[95vh] overflow-y-auto rounded-2xl shadow-2xl">
+
+      {/* Header */}
+      <div className="flex items-center justify-between px-8 py-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-2xl">
+        <div>
+          <h2 className="text-2xl font-semibold">Add New Customer</h2>
+          <p className="text-sm text-blue-100 mt-1">
+            Choose customer type and complete required information
+          </p>
+        </div>
+
+        <button
+          onClick={() => setShowAddForm(false)}
+          className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition flex items-center justify-center"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form onSubmit={handleAddCustomer} className="p-8 space-y-8">
+
+        {/* Tabs */}
+        <div className="flex gap-3 bg-gray-100 p-2 rounded-xl w-fit">
+          {(['Individual', 'Comp. client', 'Government'] as const).map(tab => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveFormTab(tab)}
+              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all
+                ${
+                  activeFormTab === tab
+                    ? 'bg-blue-600 text-white shadow'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Section Wrapper */}
+        <div className="space-y-10">
+
+          {/* INDIVIDUAL */}
+          {activeFormTab === 'Individual' && (
+            <Section title="Individual Customer">
+              <Grid>
+                <Input label="ID Number *" required value={newCustomer.id_number}
+                  onChange={v => setNewCustomer(p => ({ ...p, id_number: v }))} />
+
+                <Input label="Mobile *" required value={newCustomer.mobile}
+                  onChange={v => setNewCustomer(p => ({ ...p, mobile: v }))} />
+
+                <Input label="Customer Name *" required value={newCustomer.customer_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, customer_name: v }))} />
+
+                <Input label="City *" required value={newCustomer.city}
+                  onChange={v => setNewCustomer(p => ({ ...p, city: v }))} />
+              </Grid>
+            </Section>
+          )}
+
+          {/* COMPANY */}
+          {activeFormTab === 'Comp. client' && (
+            <Section title="Company Client">
+              <Grid>
+                <Input label="Mobile *" required value={newCustomer.mobile}
+                  onChange={v => setNewCustomer(p => ({ ...p, mobile: v }))} />
+
+                <Input label="Customer Name *" required value={newCustomer.customer_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, customer_name: v }))} />
+
+                <Input label="Company Name *" required value={newCustomer.company_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, company_name: v }))} />
+
+                <Input label="VAT Number" value={newCustomer.vat_number}
+                  onChange={v => setNewCustomer(p => ({ ...p, vat_number: v }))} />
+
+                <Input label="CR Number" value={newCustomer.cr_number}
+                  onChange={v => setNewCustomer(p => ({ ...p, cr_number: v }))} />
+
+                <Input label="City *" required value={newCustomer.city}
+                  onChange={v => setNewCustomer(p => ({ ...p, city: v }))} />
+
+                <Input label="Street Name" value={newCustomer.street_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, street_name: v }))} />
+
+                <Input label="Building No." value={newCustomer.building_no}
+                  onChange={v => setNewCustomer(p => ({ ...p, building_no: v }))} />
+
+                <Input label="Branch No." value={newCustomer.branch_no}
+                  onChange={v => setNewCustomer(p => ({ ...p, branch_no: v }))} />
+
+                <Input label="District" value={newCustomer.district}
+                  onChange={v => setNewCustomer(p => ({ ...p, district: v }))} />
+
+                <Input label="Zipcode" value={newCustomer.zipcode}
+                  onChange={v => setNewCustomer(p => ({ ...p, zipcode: v }))} />
+
+                <Textarea label="Address" value={newCustomer.address}
+                  onChange={v => setNewCustomer(p => ({ ...p, address: v }))} />
+              </Grid>
+            </Section>
+          )}
+
+          {/* GOVERNMENT */}
+          {activeFormTab === 'Government' && (
+            <Section title="Government Entity">
+              <Grid>
+                <Input label="Mobile *" required value={newCustomer.mobile}
+                  onChange={v => setNewCustomer(p => ({ ...p, mobile: v }))} />
+
+                <Input label="Customer Name *" required value={newCustomer.customer_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, customer_name: v }))} />
+
+                <Input label="City *" required value={newCustomer.city}
+                  onChange={v => setNewCustomer(p => ({ ...p, city: v }))} />
+
+                <Input label="Entity Name *" required value={newCustomer.entity_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, entity_name: v }))} />
+
+                <Input label="Branch Name *" required value={newCustomer.branch_name}
+                  onChange={v => setNewCustomer(p => ({ ...p, branch_name: v }))} />
+              </Grid>
+            </Section>
+          )}
+
+          {/* ACTIVITY */}
+          <Section title="Activity Information">
+            <Grid>
+              <Input type="number" label="Quotations" value={newCustomer.quotations} />
+              <Input type="number" label="Points" value={newCustomer.current_balance} />
+              <Input type="number" label="Calendar Events" value={newCustomer.calendar_events} />
+              <Input type="number" label="Maintenance Contracts" value={newCustomer.maint_contracts} />
+            </Grid>
+          </Section>
+
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-4 pt-6 border-t">
+          <button
+            type="button"
+            onClick={() => setShowAddForm(false)}
+            className="px-6 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium shadow disabled:opacity-50"
+          >
+            {submitting ? 'Adding...' : 'Add Customer'}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+);
+
 
   /* =======================
      Quotations Table Content
@@ -1371,7 +1680,7 @@ const Customers: React.FC = () => {
         {tabs.map(tab => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => { setActiveTab(tab); navigate(tab === 'Clients' ? '/customers' : `/customers/${tabToParam[tab]}`); }}
             className={`py-1 px-6 text-sm font-semibold border-2 border-zinc-500 w-40 h-9
               ${activeTab === tab ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
           >
@@ -1397,6 +1706,8 @@ const Customers: React.FC = () => {
       {activeTab === 'Maint. Contract' && maintContractTableContent}
 
       {activeTab === 'Check Car' && checkCarTableContent}
+
+      {addCustomerModal}
     </div>
   );
 };

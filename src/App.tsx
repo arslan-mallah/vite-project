@@ -1,10 +1,9 @@
-// import './App.css';
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider } from './core/context/AuthContext';
 import { ThemeProvider } from './core/theme';
-import { ProtectedRoute } from './core/components/ProtectedRoute';
+import { UserRouteGuard } from './core/gaurds';
 import { useAppShortcuts } from './core/hooks/useAppShortcuts';
 import { Dashboard } from './core/Dashboard';
 import { UserManagementComponent } from './features/users/UserManagement';
@@ -16,12 +15,18 @@ import { Inventory } from './features/inventory/Inventory';
 import { CompanyManagement } from './features/companies/CompanyManagement';
 import { BranchManagement } from './features/branches/BranchManagement';
 
+// Optional: Not Found Page
+const NotFound = () => <div className="flex items-center justify-center w-screen h-screen">
+      <div className="text-4xl font-bold text-center">
+        404 - Page Not Found
+      </div>
+    </div>;
 
 function AppContent() {
   // Initialize app-wide keyboard shortcuts
   useAppShortcuts();
 
-  // Sync document direction based on current i18n language and listen for changes
+  // Sync document direction based on current i18n language
   const { i18n } = useTranslation();
   useEffect(() => {
     const setDir = (lang: string) => {
@@ -43,71 +48,136 @@ function AppContent() {
 
   return (
     <Routes>
+      {/* Public Route */}
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
+
+      {/* Protected Routes */}
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
+          <UserRouteGuard>
             <Dashboard />
-          </ProtectedRoute>
+          </UserRouteGuard>
         }
+      />
+      <Route
+        path="/"
+        element={<Navigate to="/dashboard" replace />}
       />
       <Route
         path="/users"
         element={
-          <ProtectedRoute>
+          <UserRouteGuard>
             <UserManagementComponent />
-          </ProtectedRoute>
+          </UserRouteGuard>
         }
       />
       <Route
         path="/translations"
         element={
-          <ProtectedRoute>
+          <UserRouteGuard>
             <TranslationManagement />
-          </ProtectedRoute>
+          </UserRouteGuard>
         }
       />
       <Route
         path="/shortcuts"
         element={
-          <ProtectedRoute>
+          <UserRouteGuard>
             <KeyboardShortcutManagement />
-          </ProtectedRoute>
+          </UserRouteGuard>
         }
       />
       <Route
         path="/theme"
         element={
-          <ProtectedRoute>
+          <UserRouteGuard>
             <ThemeBuilder />
-          </ProtectedRoute>
+          </UserRouteGuard>
         }
       />
       <Route
         path="/inventory"
         element={
-          <ProtectedRoute>
+          <UserRouteGuard>
             <Inventory />
-          </ProtectedRoute>
+          </UserRouteGuard>
         }
       />
       <Route
         path="/companies"
-        element={<CompanyManagement />}
+        element={
+          <UserRouteGuard>
+            <CompanyManagement />
+          </UserRouteGuard>
+        }
       />
       <Route
         path="/branches"
-        element={<BranchManagement />}
+        element={
+          <UserRouteGuard>
+            <BranchManagement />
+          </UserRouteGuard>
+        }
       />
+      <Route
+        path="/customers/*"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/works"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/sales"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/hr"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/training"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/website"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      {/* Catch-all 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
