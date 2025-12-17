@@ -58,10 +58,10 @@ export function Dashboard() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="">
 
       {/* Header */}
-      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40 shadow-sm w-full">
+      <header className="bg-white  sticky top-0 z-40 shadow w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16">
             {/* Logo & Brand */}

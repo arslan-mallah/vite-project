@@ -1674,9 +1674,9 @@ const Textarea = ({ label, value, onChange }: TextareaProps) => (
   );
 
   return (
-    <div className="ml-5 min-h-screen p-2 font-sans text-right" dir="ltr">
+    <div className="mt-5 ml-5 min-h-screen p-2 font-sans text-right" dir="ltr">
       {/* Tabs */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 mt-5">
         {tabs.map(tab => (
           <button
             key={tab}
