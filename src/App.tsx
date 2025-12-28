@@ -11,7 +11,6 @@ import { TranslationManagement } from './features/settings/TranslationManagement
 import { KeyboardShortcutManagement } from './features/settings/KeyboardShortcutManagement';
 import { ThemeBuilder } from './core/theme';
 import Login from './features/auth/Login';
-import { Inventory } from './features/inventory/Inventory';
 import { CompanyManagement } from './features/companies/CompanyManagement';
 import { BranchManagement } from './features/branches/BranchManagement';
 
@@ -100,7 +99,23 @@ function AppContent() {
         path="/inventory"
         element={
           <UserRouteGuard>
-            <Inventory />
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/items"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/units"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
           </UserRouteGuard>
         }
       />

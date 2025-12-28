@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext';
 import Management from '../features/dashboard/Management';
 import Customers from '../features/dashboard/Customers';
 import Sales from '../features/dashboard/Sales';
+import Inventory from '../features/dashboard/Inventory';
 
 export function Dashboard() {
   const { logout } = useAuth();
@@ -15,7 +16,7 @@ export function Dashboard() {
     if (pathname.startsWith('/customers')) return 'customers';
     if (pathname === '/works') return 'works';
     if (pathname === '/sales') return 'sales';
-    if (pathname === '/inventory') return 'inventory';
+    if (pathname.startsWith('/inventory')) return 'inventory';
     if (pathname === '/hr') return 'hr';
     if (pathname === '/reports') return 'reports';
     if (pathname === '/training') return 'training';
@@ -136,7 +137,8 @@ export function Dashboard() {
       {activeTab === 'management' && <Management />}
       {activeTab === 'customers' && <Customers />}
       {activeTab === 'sales' && <Sales />}
-      {activeTab !== 'management' && activeTab !== 'customers' && activeTab !== 'sales' && (
+      {activeTab === 'inventory' && <Inventory />}
+      {activeTab !== 'management' && activeTab !== 'customers' && activeTab !== 'sales' && activeTab !== 'inventory' && (
         <div className="w-full min-h-screen bg-white p-4 flex justify-center items-center text-gray-400 text-lg font-semibold">
           No Data Available for {activeTab}
         </div>
