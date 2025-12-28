@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Management from '../features/dashboard/Management';
 import Customers from '../features/dashboard/Customers';
+import Sales from '../features/dashboard/Sales';
 
 export function Dashboard() {
   const { logout } = useAuth();
@@ -134,7 +135,8 @@ export function Dashboard() {
 
       {activeTab === 'management' && <Management />}
       {activeTab === 'customers' && <Customers />}
-      {activeTab !== 'management' && activeTab !== 'customers' && (
+      {activeTab === 'sales' && <Sales />}
+      {activeTab !== 'management' && activeTab !== 'customers' && activeTab !== 'sales' && (
         <div className="w-full min-h-screen bg-white p-4 flex justify-center items-center text-gray-400 text-lg font-semibold">
           No Data Available for {activeTab}
         </div>

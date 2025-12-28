@@ -46,9 +46,9 @@ export const ThemeBuilder: React.FC = () => {
       'infoColor',
     ] as Array<keyof Omit<Theme, 'fontSize' | 'spacing' | 'name'>>;
 
-    const newTheme = { ...theme } as any;
+    const newTheme = { ...theme } as Theme;
     keys.forEach((k) => {
-      newTheme[k] = randHex();
+      (newTheme as Record<string, string>)[k] = randHex();
     });
     setTheme(newTheme);
     setCopyStatus('✨ Randomized colors');
@@ -146,14 +146,14 @@ export const ThemeBuilder: React.FC = () => {
               <div className="flex items-center gap-3">
                 <input
                   type="color"
-                  value={(theme as any)[key]}
-                  onChange={(e) => handleColorChange(key as any, e.target.value)}
+                  value={(theme as Record<string, string>)[key]}
+                  onChange={(e) => handleColorChange(key as string, e.target.value)}
                   className="w-14 h-12 border-2 border-slate-300 dark:border-slate-600 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                 />
                 <input
                   type="text"
-                  value={(theme as any)[key]}
-                  onChange={(e) => handleColorChange(key as any, e.target.value)}
+                  value={(theme as Record<string, string>)[key]}
+                  onChange={(e) => handleColorChange(key as string, e.target.value)}
                   className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>

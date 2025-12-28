@@ -193,17 +193,17 @@ const authTranslations: Record<string, Record<string, string>> = {
 };
 
 Object.keys(authTranslations).forEach((lng) => {
-  if ((resources as any)[lng]) {
+  if ((resources as Record<string, { translation: Record<string, unknown> }>)[lng]) {
     // Ensure `auth` namespace exists and merge auth translations under it
-    const target = (resources as any)[lng].translation;
+    const target = (resources as Record<string, { translation: Record<string, unknown> }>)[lng].translation;
     target.auth = Object.assign({}, target.auth || {}, authTranslations[lng]);
   }
 });
 
 // Ensure `shortcuts` keys exist in all languages (use English defaults as fallback)
-const englishShortcuts = (enTranslation as any).shortcuts || {};
+const englishShortcuts = (enTranslation as Record<string, unknown>).shortcuts || {};
 Object.keys(resources).forEach((lng) => {
-  const target = (resources as any)[lng];
+  const target = (resources as Record<string, { translation: Record<string, unknown> }>)[lng];
   if (target && target.translation) {
     // do not overwrite existing translations; let existing locale override English defaults
     target.translation.shortcuts = Object.assign({}, englishShortcuts, target.translation.shortcuts || {});
@@ -211,9 +211,9 @@ Object.keys(resources).forEach((lng) => {
 });
 
 // Ensure `theme` keys exist in all languages (use English defaults as fallback)
-const englishTheme = (enTranslation as any).theme || {};
+const englishTheme = (enTranslation as Record<string, unknown>).theme || {};
 Object.keys(resources).forEach((lng) => {
-  const target = (resources as any)[lng];
+  const target = (resources as Record<string, { translation: Record<string, unknown> }>)[lng];
   if (target && target.translation) {
     // do not overwrite existing translations; let existing locale override English defaults
     target.translation.theme = Object.assign({}, englishTheme, target.translation.theme || {});

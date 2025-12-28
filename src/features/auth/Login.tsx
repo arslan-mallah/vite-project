@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/context/AuthContext";
@@ -36,9 +36,9 @@ export default function Login() {
     }
   };
 
-  const changeLanguage = (lang: string) => {
+  const changeLanguage = useCallback((lang: string) => {
     i18n.changeLanguage(lang);
-  };
+  }, [i18n]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -53,7 +53,7 @@ export default function Login() {
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [i18n]);
+  }, [i18n, changeLanguage]);
 
   return (
     <div className="min-h-sceen flex flex-col-reverse md:flex-row bg-white" dir={isArabic ? "rtl" : "ltr"}>

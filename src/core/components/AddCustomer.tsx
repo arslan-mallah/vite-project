@@ -11,8 +11,8 @@ export type FormField = {
 
 type DynamicFormProps = {
   fields: FormField[];
-  initialValues?: Record<string, any>;
-  onSubmit: (values: Record<string, any>) => void;
+  initialValues?: Record<string, unknown>;
+  onSubmit: (values: Record<string, unknown>) => void;
   submitLabel?: string;
   submitting?: boolean;
 };
@@ -24,9 +24,9 @@ export const DynamicForm: React.FC<DynamicFormProps> = ({
   submitLabel = 'Submit',
   submitting = false,
 }) => {
-  const [formValues, setFormValues] = useState<Record<string, any>>(initialValues);
+  const [formValues, setFormValues] = useState<Record<string, unknown>>(initialValues);
 
-  const handleChange = (name: string, value: any) => {
+  const handleChange = (name: string, value: unknown) => {
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 

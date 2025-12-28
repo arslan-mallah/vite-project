@@ -147,7 +147,7 @@ let nextCompanyId = 3;
 export function setupMockAPI() {
   const originalFetch = window.fetch;
 
-  (window as any).fetch = function (url: string, options?: RequestInit): Promise<Response> {
+  (window as unknown as { fetch: typeof originalFetch }).fetch = function (url: string, options?: RequestInit): Promise<Response> {
     // Simulate network delay
     const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 

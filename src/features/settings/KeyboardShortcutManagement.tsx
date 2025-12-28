@@ -30,7 +30,7 @@ export function KeyboardShortcutManagement() {
     keyboardShortcutService.init();
     
     // Load shortcuts
-    loadShortcuts();
+    loadShortcuts(); // eslint-disable-line react-hooks/set-state-in-effect
 
     return () => {
       keyboardShortcutService.destroy();

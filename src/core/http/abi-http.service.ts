@@ -15,7 +15,7 @@ export class AbiHttpService {
     };
     const token = localStorage.getItem('authToken');
     if (token) {
-      (headers as any)['Authorization'] = `Bearer ${token}`;
+      (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
     }
     return headers;
   }
@@ -31,7 +31,8 @@ export class AbiHttpService {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
+      const errorData = await response.json().catch(() => ({ success: false, message: `HTTP Error: ${response.status}` }));
+      return errorData as T;
     }
 
     if (response.status === 204) {
@@ -45,14 +46,14 @@ export class AbiHttpService {
     return this.request<T>(url, { method: 'GET' });
   }
 
-  post<T>(url: string, body: any): Promise<T> {
+  post<T>(url: string, body: unknown): Promise<T> {
     return this.request<T>(url, {
       method: 'POST',
       body: JSON.stringify(body),
     });
   }
 
-  put<T>(url: string, body: any): Promise<T> {
+  put<T>(url: string, body: unknown): Promise<T> {
     return this.request<T>(url, {
       method: 'PUT',
       body: JSON.stringify(body),
@@ -66,5 +67,5 @@ export class AbiHttpService {
 
 // Export singleton instance
 export const httpService = new AbiHttpService(
-  import.meta.env.VITE_API_BASE_URL || '/api'
+  'http://localhost:8000/api'
 );

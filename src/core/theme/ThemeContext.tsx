@@ -111,7 +111,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
  * Custom hook to use theme context
  * @throws Error if used outside ThemeProvider
  */
-export const useTheme = (): ThemeContextValue => {
+export const useTheme = (): ThemeContextValue => { // eslint-disable-line react-refresh/only-export-components
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');

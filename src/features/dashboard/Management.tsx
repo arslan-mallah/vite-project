@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { httpService } from '../../core/http/abi-http.service';
 
 export default function Management() {
@@ -14,16 +14,36 @@ export default function Management() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sections, setSections] = useState<any[]>([]);
+interface ManagementItem {
+  label: string;
+  value: string | number;
+  type?: string;
+  color?: string;
+}
 
-  const fetchManagementData = async () => {
+  const [sections, setSections] = useState<{ title: string; items: ManagementItem[] }[]>([]);
+
+  const fetchManagementData = useCallback(async () => {
     try {
       setLoading(true);
       const start = `${startDate.year}-${startDate.month.padStart(2, '0')}-${startDate.day.padStart(2, '0')}`;
       const end = `${endDate.year}-${endDate.month.padStart(2, '0')}-${endDate.day.padStart(2, '0')}`;
-      const result: any = await httpService.get(`/dashboard/management?start_date=${start}&end_date=${end}`);
-      if (result.success) {
-        const data = result.data;
+      const result: unknown = await httpService.get(`/dashboard/management?start_date=${start}&end_date=${end}`);
+      interface ManagementApiResponse {
+        success: boolean;
+        data: {
+          vat: { sales_vat: number; expenses: number; purchase: number; tax_due: number };
+          cashflow: ManagementItem[];
+          purchase: ManagementItem[];
+          expenses: ManagementItem[];
+          maintenance: ManagementItem[];
+          sales: ManagementItem[];
+        };
+        message?: string;
+      }
+      const typedResult = result as ManagementApiResponse;
+      if (typedResult && typedResult.success) {
+        const data = typedResult.data;
         const formattedSections = [
           {
             title: "VAT",
@@ -60,17 +80,17 @@ export default function Management() {
         setSections([]);
         setError('Failed to fetch data');
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError((err as Error).message);
       setSections([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [startDate, endDate]);
 
   useEffect(() => {
     fetchManagementData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, fetchManagementData]);
 
   return (
     <div className="w-full min-h-screen bg-white p-4">
@@ -191,7 +211,7 @@ export default function Management() {
       </div>
 
       {/* Items */}
-      {section.items.map((item: any) => (
+      {section.items.map((item: ManagementItem) => (
         <div
           key={item.label}
           className="border border-gray-200 rounded-lg p-4 mb-3 bg-gray-100 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 flex flex-col justify-between"
