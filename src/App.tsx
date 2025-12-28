@@ -120,6 +120,54 @@ function AppContent() {
         }
       />
       <Route
+        path="/inventory/vendors"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/start-inventory"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/inventory-cats"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/inventory-report"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/most-sales"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
+        path="/inventory/less-sales"
+        element={
+          <UserRouteGuard>
+            <Dashboard />
+          </UserRouteGuard>
+        }
+      />
+      <Route
         path="/companies"
         element={
           <UserRouteGuard>

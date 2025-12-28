@@ -78,15 +78,23 @@ const Inventory: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState(() => {
     const pathname = location.pathname;
-    if (pathname === '/inventory/units') return 'Units';
-    if (pathname === '/inventory/items') return 'Items';
-    return 'Items'; // default
+    const pathToTab = {
+      '/inventory/vendors': 'Vendors',
+      '/inventory/units': 'Units',
+      '/inventory/start-inventory': 'Start Inventory',
+      '/inventory/inventory-cats': 'Inventory Cats',
+      '/inventory/items': 'Inventory Items',
+      '/inventory/inventory-report': 'Inventory Report',
+      '/inventory/most-sales': 'Most Sales',
+      '/inventory/less-sales': 'Less Sales'
+    };
+    return pathToTab[pathname as keyof typeof pathToTab] || 'Inventory Items';
   });
   const [items, setItems] = useState<Item[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const tabs = ['Items', 'Units'];
+  const tabs = ['Vendors', 'Units', 'Start Inventory', 'Inventory Cats', 'Inventory Items', 'Inventory Report', 'Most Sales', 'Less Sales'];
 
   const fetchItems = useCallback(async () => {
     setLoading(true);
@@ -119,8 +127,14 @@ const Inventory: React.FC = () => {
   // Update URL when active tab changes
   useEffect(() => {
     const tabToPath = {
-      'Items': '/inventory/items',
-      'Units': '/inventory/units'
+      'Vendors': '/inventory/vendors',
+      'Units': '/inventory/units',
+      'Start Inventory': '/inventory/start-inventory',
+      'Inventory Cats': '/inventory/inventory-cats',
+      'Inventory Items': '/inventory/items',
+      'Inventory Report': '/inventory/inventory-report',
+      'Most Sales': '/inventory/most-sales',
+      'Less Sales': '/inventory/less-sales'
     };
     const path = tabToPath[activeTab as keyof typeof tabToPath] || '/inventory/items';
     if (location.pathname !== path) {
@@ -131,15 +145,22 @@ const Inventory: React.FC = () => {
   // Update active tab when URL changes
   useEffect(() => {
     const pathname = location.pathname;
-    let newTab = 'Items'; // default
-    if (pathname === '/inventory/units') newTab = 'Units';
-    else if (pathname === '/inventory/items') newTab = 'Items';
-
+    const pathToTab = {
+      '/inventory/vendors': 'Vendors',
+      '/inventory/units': 'Units',
+      '/inventory/start-inventory': 'Start Inventory',
+      '/inventory/inventory-cats': 'Inventory Cats',
+      '/inventory/items': 'Inventory Items',
+      '/inventory/inventory-report': 'Inventory Report',
+      '/inventory/most-sales': 'Most Sales',
+      '/inventory/less-sales': 'Less Sales'
+    };
+    const newTab = pathToTab[pathname as keyof typeof pathToTab] || 'Inventory Items';
     setActiveTab(newTab);
   }, [location.pathname]);
 
   useEffect(() => {
-    if (activeTab === 'Items') {
+    if (activeTab === 'Inventory Items') {
       fetchItems();
     } else if (activeTab === 'Units') {
       fetchUnits();
@@ -148,6 +169,30 @@ const Inventory: React.FC = () => {
 
   const renderItemsTable = () => (
     <div className="bg-white shadow rounded-lg overflow-x-auto">
+      {/* Search Filters */}
+      <div className="bg-white p-4 mb-3 flex flex-wrap items-end gap-4">
+        <input
+          placeholder="Item Code"
+          className="border-2 border-zinc-500 px-2 py-1 rounded-lg h-9"
+        />
+        
+        <input
+          placeholder="Item Name"
+          className="border-2 border-zinc-500 px-2 py-1 rounded-lg h-9"
+        />
+
+        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md transition-all duration-200 w-24 h-9">
+          Search
+        </button>
+
+        {/* spacer */}
+        <div className="ml-auto flex gap-2">
+          <button className="bg-blue-600 text-white px-2 py-1 rounded-lg h-9 w-32">
+            Add Item
+          </button>
+        </div>
+      </div>
+
       <table className="min-w-full text-center border">
         <thead className="bg-gray-300">
           <tr>
@@ -212,6 +257,16 @@ const Inventory: React.FC = () => {
 
   const renderUnitsTable = () => (
     <div className="bg-white shadow rounded-lg overflow-x-auto">
+      {/* Search Filters */}
+      <div className="bg-white p-4 mb-3 flex flex-wrap items-end gap-4">
+        {/* spacer */}
+        <div className="ml-auto flex gap-2">
+          <button className="bg-blue-600 text-white px-2 py-1 rounded-lg h-9 w-32">
+            Add Unit
+          </button>
+        </div>
+      </div>
+
       <table className="min-w-full text-center border">
         <thead className="bg-gray-300">
           <tr>
@@ -305,8 +360,13 @@ const Inventory: React.FC = () => {
 
       {/* Content Card */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        {activeTab === 'Items' && renderItemsTable()}
+        {activeTab === 'Inventory Items' && renderItemsTable()}
         {activeTab === 'Units' && renderUnitsTable()}
+        {activeTab !== 'Inventory Items' && activeTab !== 'Units' && (
+          <div className="w-full min-h-screen bg-white p-4 flex justify-center items-center text-gray-400 text-lg font-semibold">
+            No Data Available for {activeTab}
+          </div>
+        )}
       </div>
     </div>
   );
